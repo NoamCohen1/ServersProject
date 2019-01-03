@@ -3,4 +3,4 @@ project(ServersProject)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(ServersProject main.cpp)
+add_executable(ServersProject main.cpp Server.h ClientHandler.h Solver.h CacheManager.h MySerialServer.cpp MySerialServer.h MyTestClientHandler.cpp MyTestClientHandler.h FileCacheManager.cpp FileCacheManager.h)
