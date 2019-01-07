@@ -18,14 +18,17 @@
 #include <string.h>
 
 #include <sys/socket.h>
+#include "FileCacheManager.h"
 
 class MyTestClientHandler : public ClientHandler {
-    Solver solver;
-    CacheManager cacheManager;
+    Solver<string, string>* solver;
+    FileCacheManager* fileCacheManager;
 public:
-    virtual void handleClient(istream &inputStream, ostream &outputStream);
-
-    void solveProblem(int sockfd);
+    MyTestClientHandler(Solver<string, string>* solver, FileCacheManager* fileCacheManager) {
+        this->solver = solver;
+        this->fileCacheManager = fileCacheManager;
+    }
+    virtual void handleClient(int sockfd);
 
 };
 

@@ -4,11 +4,16 @@
 
 #include "MySerialServer.h"
 
-void MySerialServer::open(int port, ClientHandler handler) {
-    thread(openSocket, port, handler);
+void MySerialServer::open(int port, ClientHandler* handler) {
+    thread thread1(openSocket, port, handler);
+    thread1.detach();
 }
 
-void MySerialServer::openSocket(int port, ClientHandler handler) {
+void MySerialServer::stop() {
+
+}
+
+void MySerialServer::openSocket(int port, ClientHandler* handler) {
     int sockfd, newsockfd, portno, clilen;
     struct sockaddr_in serv_addr, cli_addr;
 
@@ -38,13 +43,14 @@ void MySerialServer::openSocket(int port, ClientHandler handler) {
     * go in sleep mode and will wait for the incoming connection
     */
 
-    listen(sockfd, 5);
-    clilen = sizeof(cli_addr);
+
 
     while (true) {
+        listen(sockfd, 5);
+        clilen = sizeof(cli_addr);
         /* Accept actual connection from the client */
         newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, (socklen_t *) &clilen);
-        handler.solveProblem(sockfd);
+        handler->handleClient(newsockfd);
     }
 }
 

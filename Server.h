@@ -20,7 +20,7 @@ class Server {
 protected:
     bool stopLoop = false;
 public:
-    virtual void open(int port, ClientHandler handler) = 0;
+    virtual void open(int port, ClientHandler* handler) = 0;
 
     virtual void stop() = 0;
 };

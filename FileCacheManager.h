@@ -6,9 +6,31 @@
 #define SERVERSPROJECT_FILECACHEMANAGER_H
 
 #include "CacheManager.h"
+#include <iostream>
+#include <fstream>
+#include <vector>
+#define START_STRING 0
+#define DELIMITER "$"
+
 
 class FileCacheManager : public CacheManager {
+
 public:
+    FileCacheManager(){
+        makeMap();
+    }
+
+    virtual bool doWeHaveSolution(string problem);
+
+    virtual string getSolution(string problem);
+
+    vector<string> split(string buffer);
+
+        void makeMap();
+
+    void addSolToMap (string problem, string solution);
+
+    void writeInfo (string problem, string solution);
 
 };
 

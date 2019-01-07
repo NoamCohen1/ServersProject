@@ -10,9 +10,9 @@
 
 class MySerialServer : public Server {
 public:
-    virtual void open(int port, ClientHandler handler);
+    virtual void open(int port, ClientHandler* handler);
 
-    static void openSocket(int port, ClientHandler handler);
+    static void openSocket(int port, ClientHandler* handler);
 
     virtual void stop();
 };

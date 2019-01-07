@@ -12,12 +12,10 @@
 using namespace std;
 
 class ClientHandler {
-    Solver solver;
-    CacheManager cacheManager;
+    Solver<string, string>* solver;
+    CacheManager* cacheManager;
 public:
-    virtual void handleClient(istream &inputStream, ostream &outputStream) = 0;
-
-    virtual void solveProblem(int sockfd) = 0;
+    virtual void handleClient(int sockfd) = 0;
 
 };
 #endif //SERVERSPROJECT_CLIENTHANDLER_H
