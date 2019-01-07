@@ -5,6 +5,10 @@
 #include "MySerialServer.h"
 
 void MySerialServer::open(int port, ClientHandler handler) {
+    thread(openSocket, port, handler);
+}
+
+void MySerialServer::openSocket(int port, ClientHandler handler) {
     int sockfd, newsockfd, portno, clilen;
     struct sockaddr_in serv_addr, cli_addr;
 
@@ -18,7 +22,7 @@ void MySerialServer::open(int port, ClientHandler handler) {
 
     /* Initialize socket structure */
     bzero((char *) &serv_addr, sizeof(serv_addr));
-    portno = 5001;
+    portno = port;
 
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_addr.s_addr = INADDR_ANY;
@@ -31,17 +35,16 @@ void MySerialServer::open(int port, ClientHandler handler) {
     }
 
     /* Now start listening for the clients, here process will
-       * go in sleep mode and will wait for the incoming connection
+    * go in sleep mode and will wait for the incoming connection
     */
 
-    listen(sockfd,5);
+    listen(sockfd, 5);
     clilen = sizeof(cli_addr);
 
-    while (!stopLoop) {
+    while (true) {
         /* Accept actual connection from the client */
-        newsockfd = accept(sockfd, (struct sockaddr *)&cli_addr, (socklen_t*)&clilen);
+        newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, (socklen_t *) &clilen);
         handler.solveProblem(sockfd);
     }
 }
-
 
