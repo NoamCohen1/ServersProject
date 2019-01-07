@@ -9,7 +9,7 @@
 
 void MyTestClientHandler::solveProblem(int sockfd) {
     char buffer[256];
-    int  n;
+    int n;
     if (sockfd < 0) {
         perror("ERROR on accept");
         exit(1);
