@@ -7,11 +7,17 @@
 
 #include <iostream>
 #include <ostream>
-
+#include "Solver.h"
+#include "CacheManager.h"
 using namespace std;
 
 class ClientHandler {
+    Solver solver;
+    CacheManager cacheManager;
 public:
     virtual void handleClient(istream &inputStream, ostream &outputStream) = 0;
+
+    virtual void solveProblem(int sockfd) = 0;
+
 };
 #endif //SERVERSPROJECT_CLIENTHANDLER_H

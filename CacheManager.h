@@ -6,7 +6,8 @@
 #define SERVERSPROJECT_CACHEMANAGER_H
 
 class CacheManager {
-
+public:
+    bool doWeHaveSolution();
 };
 
 #endif //SERVERSPROJECT_CACHEMANAGER_H
