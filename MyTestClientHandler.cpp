@@ -22,7 +22,7 @@
              exit(1);
          }
 
-         if (buffer == "end") {
+         if (strcmp(buffer,"end") == 0) {
              return;
          }
 

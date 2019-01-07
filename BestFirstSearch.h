@@ -1,0 +1,14 @@
+//
+// Created by gal on 1/7/19.
+//
+
+#ifndef SERVERSPROJECT_BESTFIRSTSEARCH_H
+#define SERVERSPROJECT_BESTFIRSTSEARCH_H
+
+
+class BestFirstSearch {
+
+};
+
+
+#endif //SERVERSPROJECT_BESTFIRSTSEARCH_H
