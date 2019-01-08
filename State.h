@@ -5,18 +5,36 @@
 #ifndef SERVERSPROJECT_STATE_H
 #define SERVERSPROJECT_STATE_H
 
-template <class T>
+template<class T>
 class State {
-    T state;
+    T* state;
     double cost;
-    State<T> cameFrom;
+    State<T> *cameFrom;
 public:
-    State(T state) {
+    State(T* state, double cost) {
         this->state = state;
+        this->cost = cost;
+        this->cameFrom = nullptr;
     }
 
-    bool equals(State<T> s) {
-        return state.equals(s.state);
+    bool equals(State<T>* s) {
+        return (this->state == s->state);
+    }
+
+    void setCameFrom(State<T>* s) {
+        this->cameFrom = s;
+    }
+
+    State<T>* getCameFrom() {
+        return this->cameFrom;
+    }
+
+    void setCost(double newCost) {
+        this->cost = newCost;
+    }
+
+    double getCost() {
+        return this->cost;
     }
 };
 
