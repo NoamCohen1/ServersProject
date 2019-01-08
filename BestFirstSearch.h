@@ -19,38 +19,48 @@ class BestFirstSearch : public Searcher<T> {
 public:
     virtual vector<T> search(Searchable<T> searchable) {
         // OPEN
-        priority_queue<State<T>*, vector<State<T>*>, CompareStates> queueOpen;
+        priority_queue<State<T> *, vector<State<T> *>, CompareStates> queueOpen;
         queueOpen.push(searchable.getInitialState());
         // CLOSED
-        vector<State<T>*> statesClosed;
+        vector<State<T> *> statesClosed;
+        vector<State<T> *> neighbors;
+
         while (!queueOpen.empty()) {
-            State<T>* node = queueOpen.top();
+            State<T> *node = queueOpen.top();
             statesClosed.push_back(node);
             queueOpen.pop();
             if (node->equals(searchable.getGoalState())) {
                 // call func to return the path by the places
                 // TODO
-            }
-            vector<State<T>*> neighbors;
-            neighbors = searchable.getAllPossibleStates(node);
-            for (State<T>* neighbor : neighbors) {
-                if (!(stateIsInOpen(neighbor, queueOpen)) && !(stateIsInClosed(neighbor, statesClosed))) {
-                    // TODO - check if needed or done in getAllPossibleStates
-                    neighbor->setCameFrom(node);
-                    neighbor->setCost(neighbor->getCost() + node->getCost());
-                    queueOpen.push(neighbor);
-                } else if (neighbor->getCost() > (neighbor->getCost() - neighbor->getCameFrom().getCost() + node->getCost())) {
-                    if (!(stateIsInOpen(neighbor))) {
-                        for (State<T>* s : statesClosed) {
-                            if (neighbor->equals(s)) {
-                                statesClosed.erase(remove(statesClosed.begin(), statesClosed.end(), s), statesClosed.end());
-                                queueOpen.push(neighbor);
-                            }
-                        }
-                    } else {
-                        neighbor->setCost(neighbor->getCost() - neighbor->getCameFrom().getCost() + node->getCost());
+                vector<T> path;
+                path.push_back(node->getState());
+                while (!(node->equals(searchable.getInitialState()))) {
+                    node = node->getCameFrom();
+                    path.push_back(node->getState());
+                }
+                break;
+            } else {
+                neighbors = searchable.getAllPossibleStates(node);
+                for (State<T> *neighbor : neighbors) {
+                    if (!(stateIsInOpen(neighbor, queueOpen)) && !(stateIsInClosed(neighbor, statesClosed))) {
+                        // TODO - check if needed or done in getAllPossibleStates
                         neighbor->setCameFrom(node);
-                        queueOpen = updateQueueOpen(queueOpen);
+                        neighbor->setCost(neighbor->getCost() + node->getCost());
+                        queueOpen.push(neighbor);
+                    } else if (neighbor->getCost() >
+                               (neighbor->getCost() - neighbor->getCameFrom().getCost() + node->getCost())) {
+                        if (!(stateIsInOpen(neighbor))) {
+                            for (State<T> *s : statesClosed) {
+                                if (neighbor->equals(s)) {
+                                    statesClosed.erase(remove(statesClosed.begin(), statesClosed.end(), s), statesClosed.end());
+                                    queueOpen.push(neighbor);
+                                }
+                            }
+                        } else {
+                            neighbor->setCost(neighbor->getCost() - neighbor->getCameFrom().getCost() + node->getCost());
+                            neighbor->setCameFrom(node);
+                            queueOpen = updateQueueOpen(queueOpen);
+                        }
                     }
                 }
             }

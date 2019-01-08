@@ -36,6 +36,10 @@ public:
     double getCost() {
         return this->cost;
     }
+
+    T* getState() {
+        return this->state;
+    }
 };
 
 
