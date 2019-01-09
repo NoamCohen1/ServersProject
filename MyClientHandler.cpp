@@ -13,6 +13,7 @@ void MyClientHandler::handleClient(int sockfd) {
     int i = 0;
     vector<string> data;
     vector<State<Point>*> searchable;
+    string problem = "";
 
     if (sockfd < 0) {
         perror("ERROR on accept");
@@ -30,16 +31,9 @@ void MyClientHandler::handleClient(int sockfd) {
     howManySearchables = stoi(buffer);
 
     while (howManySearchables != 0) {
+        problem = "";
+        searchable.clear();
         /* If connection is established then start communicating */
-        bzero(buffer, 256);
-        n = read(sockfd, buffer, 255);
-        if (n < 0) {
-            perror("ERROR reading from socket");
-            exit(1);
-        }
-
-        printf("Here is the message: %s\n", buffer);
-
         // read the size
         bzero(buffer, 256);
         n = read(sockfd, buffer, 255);
@@ -56,6 +50,7 @@ void MyClientHandler::handleClient(int sockfd) {
             perror("ERROR reading from socket");
             exit(1);
         }
+        problem += buffer;
         data = split(buffer);
         Point initial(stoi(data[0]), stoi(data[1]));
         data.clear();
@@ -67,6 +62,7 @@ void MyClientHandler::handleClient(int sockfd) {
             perror("ERROR reading from socket");
             exit(1);
         }
+        problem += buffer;
         data = split(buffer);
         Point goal(stoi(data[0]), stoi(data[1]));
         data.clear();
@@ -79,18 +75,19 @@ void MyClientHandler::handleClient(int sockfd) {
                 perror("ERROR reading from socket");
                 exit(1);
             }
+            problem += buffer;
             data = split(buffer);
-            this->initialSearchable(searchable, i, data, initial, goal);
+            this->initialSearchable(searchable, i, data);
             data.clear();
             ++i;
         }
 
-
         Searchable<Point>* searchable1 = new Matrix(searchable, this->getInitialState(searchable, initial), this->getGoalState(searchable, goal));
 
+
         //get solution
-        if (this->cacheManager->doWeHaveSolution(buffer)) {
-            string str = this->cacheManager->getSolution(buffer);
+        if (this->cacheManager->doWeHaveSolution(problem)) {
+            string str = this->cacheManager->getSolution(problem);
             result = const_cast<char *>(str.c_str());
 
         } else {
@@ -144,12 +141,9 @@ State<Point>* MyClientHandler::getGoalState(vector<State<Point> *> searchable, P
     }
 }
 
-void MyClientHandler::initialSearchable(vector<State<Point>*> &searchable, int i, vector<string> data, Point initial, Point goal) {
+void MyClientHandler::initialSearchable(vector<State<Point>*> &searchable, int i, vector<string> data) {
     for (int j = 0; j < data.size(); ++j) {
-        Point pointToCompare(i, j);
         State<Point>* state = new State<Point>(new Point(i, j), stod(data[j]));
-        if (pointToCompare == initial) {
-
-        }
+        searchable.push_back(state);
     }
 }

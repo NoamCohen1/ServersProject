@@ -11,10 +11,10 @@
 
 using namespace std;
 
-template <class Solu>
+template <class T>
 class Searcher {
 public:
-    virtual vector<State<Solu>*> search(Searchable<Solu> searchable) = 0;
+    virtual vector<State<T>*> search(Searchable<T>* searchable) = 0;
 };
 
 #endif //SERVERSPROJECT_SEARCHER_H

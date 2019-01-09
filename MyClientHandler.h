@@ -18,7 +18,7 @@ class MyClientHandler : public ClientHandler {
 
     State<Point>* getGoalState(vector<State<Point>*> searchable, Point goal);
 
-    void initialSearchable(vector<State<Point>*> &searchable, int i, vector<string> data, Point initial, Point goal);
+    void initialSearchable(vector<State<Point>*> &searchable, int i, vector<string> data);
 };
 
 
