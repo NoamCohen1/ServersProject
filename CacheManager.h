@@ -16,6 +16,10 @@ public:
 
     virtual string getSolution(string problem) = 0;
 
+    virtual void writeInfo(string problem, string solution) = 0;
+
+    virtual void addSolToMap(string problem, string solution) = 0;
+
 };
 
 #endif //SERVERSPROJECT_CACHEMANAGER_H

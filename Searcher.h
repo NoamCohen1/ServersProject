@@ -14,7 +14,7 @@ using namespace std;
 template <class Solu>
 class Searcher {
 public:
-    virtual vector<Solu> search(Searchable<Solu> searchable) = 0;
+    virtual vector<State<Solu>*> search(Searchable<Solu> searchable) = 0;
 };
 
 #endif //SERVERSPROJECT_SEARCHER_H

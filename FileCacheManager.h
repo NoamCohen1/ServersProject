@@ -9,6 +9,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+
 #define START_STRING 0
 #define DELIMITER "$"
 
@@ -16,7 +17,7 @@
 class FileCacheManager : public CacheManager {
 
 public:
-    FileCacheManager(){
+    FileCacheManager() {
         makeMap();
     }
 
@@ -26,12 +27,11 @@ public:
 
     vector<string> split(string buffer);
 
-        void makeMap();
+    void makeMap();
 
-    void addSolToMap (string problem, string solution);
+    void addSolToMap(string problem, string solution);
 
-    void writeInfo (string problem, string solution);
-
+    virtual void writeInfo(string problem, string solution);
 };
 
 

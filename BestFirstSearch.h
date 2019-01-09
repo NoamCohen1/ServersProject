@@ -17,7 +17,7 @@ class BestFirstSearch : public Searcher<T> {
         }
     };
 public:
-    virtual vector<T> search(Searchable<T> searchable) {
+    virtual vector<State<T>*> search(Searchable<T> searchable) {
         // OPEN
         priority_queue<State<T> *, vector<State<T> *>, CompareStates> queueOpen;
         queueOpen.push(searchable.getInitialState());
@@ -30,15 +30,18 @@ public:
             statesClosed.push_back(node);
             queueOpen.pop();
             if (node->equals(searchable.getGoalState())) {
+                // update how many nodes the algorithm developed
+                node->setHowManyNodes(statesClosed.size());
                 // call func to return the path by the places
                 // TODO
                 vector<T> path;
-                path.push_back(node->getState());
+                path.push_back(node);
                 while (!(node->equals(searchable.getInitialState()))) {
                     node = node->getCameFrom();
-                    path.push_back(node->getState());
+                    path.push_back(node);
                 }
-                break;
+                reverse(path.begin(), path.end());
+                return path;
             } else {
                 neighbors = searchable.getAllPossibleStates(node);
                 for (State<T> *neighbor : neighbors) {

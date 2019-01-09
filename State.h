@@ -10,11 +10,13 @@ class State {
     T* state;
     double cost;
     State<T> *cameFrom;
+    int howManyNodes;
 public:
     State(T* state, double cost) {
         this->state = state;
         this->cost = cost;
         this->cameFrom = nullptr;
+        this->howManyNodes = 0;
     }
 
     bool equals(State<T>* s) {
@@ -39,6 +41,14 @@ public:
 
     T* getState() {
         return this->state;
+    }
+
+    void setHowManyNodes(int nodes) {
+        this->howManyNodes = nodes;
+    }
+
+    int getHowManyNodes() {
+        return this->howManyNodes;
     }
 };
 

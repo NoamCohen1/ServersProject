@@ -10,13 +10,22 @@
 
 using namespace std;
 
-template <class Solu>
+template <class T>
 class Searchable {
+protected:
+    vector<State<T>*> searchable;
+    State<T>* initialState;
+    State<T>* goalState;
 public:
-    virtual State<Solu> getInitialState() = 0;
+    Searchable(vector<State<T>*> searchable, State<T>* initialState, State<T>* goalState) {
+        this->searchable = searchable;
+        this->initialState = initialState;
+        this->goalState = goalState;
+    }
+    virtual State<T>* getInitialState() = 0;
 
-    virtual State<Solu> getGoalState() = 0;
+    virtual State<T>* getGoalState() = 0;
 
-    virtual vector<State<Solu>> getAllPossibleStates(State<Solu> state) = 0;
+    virtual vector<State<T>*> getAllPossibleStates(State<T>* state) = 0;
 };
 #endif //SERVERSPROJECT_SEARCHABLE_H
