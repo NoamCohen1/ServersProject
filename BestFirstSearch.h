@@ -26,9 +26,14 @@ public:
         // CLOSED
         vector<State<T> *> statesClosed;
         vector<State<T> *> neighbors;
-
+        string solution = "";
         while (!queueOpen.empty()) {
             State<T> *node = queueOpen.top();
+            // if the initial point is unreachable - does not have any neighbors
+            if ((node->equals(searchable->getInitialState())) && (node->getCost() == (-1))) {
+                solution = "-1";
+                return solution;
+            }
             statesClosed.push_back(node);
             queueOpen.pop();
             if (node->equals(searchable->getGoalState())) {
@@ -38,6 +43,7 @@ public:
                 // TODO
                 vector<State<T> *> path;
                 path.push_back(node);
+                solution += to_string((int) node->getCost()) + "," + to_string(node->getHowManyNodes());
                 while (!(node->equals(searchable->getInitialState()))) {
                     node = node->getCameFrom();
                     path.push_back(node);
@@ -45,6 +51,7 @@ public:
                 //reverse(path.begin(), path.end());
                 // TODO
                 //return path;
+                return solution;
             } else {
                 neighbors = searchable->getAllPossibleStates(node);
                 for (State<T> *neighbor : neighbors) {
@@ -65,46 +72,49 @@ public:
                         if (stateIsInClosed(neighbor, statesClosed)) {
 
                         } else {
-                                neighbor->setCost(neighbor->getCost() - neighbor->getCameFrom()->getCost() + node->getCost());
-                                neighbor->setCameFrom(node);
-                                queueOpen = updateQueueOpen(queueOpen);
-                            }
+                            neighbor->setCost(
+                                    neighbor->getCost() - neighbor->getCameFrom()->getCost() + node->getCost());
+                            neighbor->setCameFrom(node);
+                            queueOpen = updateQueueOpen(queueOpen);
                         }
                     }
                 }
             }
         }
+        solution = "-1";
+        return solution;
+    }
 
-        priority_queue<State<T> *, vector<State<T> *>, CompareStates>
-        updateQueueOpen(priority_queue<State<T> *, vector<State<T> *>, CompareStates> &queueOpen) {
-            priority_queue<State<T> *, vector<State<T> *>, CompareStates> result;
-            while (!queueOpen.empty()) {
-                State<T> *node = queueOpen.top();
-                result.push(node);
-                queueOpen.pop();
-            }
-            return result;
+    priority_queue<State<T> *, vector<State<T> *>, CompareStates>
+    updateQueueOpen(priority_queue<State<T> *, vector<State<T> *>, CompareStates> &queueOpen) {
+        priority_queue<State<T> *, vector<State<T> *>, CompareStates> result;
+        while (!queueOpen.empty()) {
+            State<T> *node = queueOpen.top();
+            result.push(node);
+            queueOpen.pop();
         }
+        return result;
+    }
 
-        bool stateIsInOpen(State<T> *state, priority_queue<State<T> *, vector<State<T> *>, CompareStates> queueOpen) {
-            while (!queueOpen.empty()) {
-                if (state->equals(queueOpen.top())) {
-                    return true;
-                }
-                queueOpen.pop();
+    bool stateIsInOpen(State<T> *state, priority_queue<State<T> *, vector<State<T> *>, CompareStates> queueOpen) {
+        while (!queueOpen.empty()) {
+            if (state->equals(queueOpen.top())) {
+                return true;
             }
-            return false;
+            queueOpen.pop();
         }
+        return false;
+    }
 
-        bool stateIsInClosed(State<T> *state, vector<State<T> *> statesClosed) {
-            for (State<T> *s : statesClosed) {
-                if (state->equals(s)) {
-                    return true;
-                }
+    bool stateIsInClosed(State<T> *state, vector<State<T> *> statesClosed) {
+        for (State<T> *s : statesClosed) {
+            if (state->equals(s)) {
+                return true;
             }
-            return false;
         }
-    };
+        return false;
+    }
+};
 
 
 #endif //SERVERSPROJECT_BESTFIRSTSEARCH_H
