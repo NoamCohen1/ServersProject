@@ -91,10 +91,10 @@ void MyClientHandler::handleClient(int sockfd) {
             result = const_cast<char *>(str.c_str());
 
         } else {
-            string solution = this->solver->solve(buffer);
-            this->cacheManager->addSolToMap(buffer, solution);
+            string solution = this->solver->solve(searchable1);
+            this->cacheManager->addSolToMap(problem, solution);
             result = const_cast<char *>(solution.c_str());
-            this->cacheManager->writeInfo(buffer, result);
+            this->cacheManager->writeInfo(problem, result);
         }
 
         printf("Here is the message after: %s\n", result);
@@ -125,7 +125,7 @@ vector<string> MyClientHandler::split(string buffer) {
 
 State<Point>* MyClientHandler::getInitialState(vector<State<Point> *> searchable, Point initial) {
     for (int i = 0; i < searchable.size(); ++i) {
-        Point point(searchable[i]->getState()->getI(), searchable[i]->getState()->getJ());
+        Point point(searchable[i]->getState().getI(), searchable[i]->getState().getJ());
         if (point == initial) {
             return searchable[i];
         }
@@ -134,7 +134,7 @@ State<Point>* MyClientHandler::getInitialState(vector<State<Point> *> searchable
 
 State<Point>* MyClientHandler::getGoalState(vector<State<Point> *> searchable, Point goal) {
     for (int i = 0; i < searchable.size(); ++i) {
-        Point point(searchable[i]->getState()->getI(), searchable[i]->getState()->getJ());
+        Point point(searchable[i]->getState().getI(), searchable[i]->getState().getJ());
         if (point == goal) {
             return searchable[i];
         }
@@ -143,7 +143,7 @@ State<Point>* MyClientHandler::getGoalState(vector<State<Point> *> searchable, P
 
 void MyClientHandler::initialSearchable(vector<State<Point>*> &searchable, int i, vector<string> data) {
     for (int j = 0; j < data.size(); ++j) {
-        State<Point>* state = new State<Point>(new Point(i, j), stod(data[j]));
+        State<Point>* state = new State<Point>(Point(i, j), stod(data[j]));
         searchable.push_back(state);
     }
 }

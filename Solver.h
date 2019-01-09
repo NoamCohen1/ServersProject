@@ -8,7 +8,7 @@ template <class Prob, class Solu>
 class Solver {
 public:
     //virtual Algorithm solve(Problem p) = 0;
-    virtual Solu solve(Prob) = 0;
+    virtual Solu solve(Prob p) = 0;
 };
 
 #endif //SERVERSPROJECT_SOLVER_H

@@ -9,15 +9,15 @@
 #include "Searcher.h"
 #include "Point.h"
 
-class SolverSearcher : public Solver<Searchable<Point>, Point> {
+class SolverSearcher : public Solver<Searchable<Point>, string> {
     Searcher<Point>* searcher;
 public:
     SolverSearcher(Searcher<Point>* searcher1) {
         this->searcher = searcher1;
     }
 
-    virtual Point solve(Searchable<Point>* p) {
-        vector<State<Point>*> solution = this->searcher->search(p);
+    virtual string solve(Searchable<Point>* p) {
+        return this->searcher->search(p);
     }
 };
 

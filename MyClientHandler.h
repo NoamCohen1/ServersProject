@@ -10,6 +10,14 @@
 #define DELIMITER ","
 
 class MyClientHandler : public ClientHandler {
+    Solver<Searchable<Point>*, string>* solver;
+    CacheManager* cacheManager;
+public:
+    MyClientHandler(Solver<Searchable<Point>*, string>* solver, CacheManager* cacheManager) {
+        this->solver = solver;
+        this->cacheManager = cacheManager;
+    }
+
     virtual void handleClient(int sockfd);
 
     vector<string> split(string buffer);

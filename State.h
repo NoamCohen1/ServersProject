@@ -7,17 +7,22 @@
 
 template<class T>
 class State {
-    T* state;
+    T state;
     double cost;
     State<T> *cameFrom;
     int howManyNodes;
 public:
-    State(T* state, double cost) {
-        this->state = state;
-        this->cost = cost;
+    State(T state, double cost) : state(state), cost(cost) {
         this->cameFrom = nullptr;
         this->howManyNodes = 0;
     }
+
+    /* State(T state, double cost) {
+         this->state = state;
+         this->cost = cost;
+         this->cameFrom = nullptr;
+         this->howManyNodes = 0;
+     }*/
 
     bool equals(State<T>* s) {
         return (this->state == s->state);
@@ -39,7 +44,7 @@ public:
         return this->cost;
     }
 
-    T* getState() {
+    T getState() {
         return this->state;
     }
 

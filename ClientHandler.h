@@ -28,15 +28,7 @@
 using namespace std;
 
 class ClientHandler {
-protected:
-    Solver<string, string>* solver;
-    CacheManager* cacheManager;
 public:
-    ClientHandler(Solver<string, string>* solver, CacheManager* cacheManager) {
-        this->solver =  solver;
-        this->cacheManager = cacheManager;
-    }
-
     virtual void handleClient(int sockfd) = 0;
 };
 #endif //SERVERSPROJECT_CLIENTHANDLER_H
