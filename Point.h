@@ -5,6 +5,15 @@
 #ifndef SERVERSPROJECT_POINT_H
 #define SERVERSPROJECT_POINT_H
 
+#include <string>
+#include <string.h>
+#include <vector>
+#include <algorithm>
+#include <iostream>
+#include "State.h"
+
+using namespace std;
+
 class Point {
     int i;
     int j;
@@ -34,6 +43,8 @@ public:
         this->i = i;
         this->j = j;
     }
+
+    string getPath(vector<State<Point>*> pathVector);
 };
 
 #endif //SERVERSPROJECT_POINT_H

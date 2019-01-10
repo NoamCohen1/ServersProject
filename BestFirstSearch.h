@@ -43,7 +43,7 @@ public:
                 // TODO
                 vector<State<T> *> path;
                 path.push_back(node);
-                solution += to_string((int) node->getCost()) + "," + to_string(node->getHowManyNodes());
+                //solution += to_string((int) node->getCost()) + "," + to_string(node->getHowManyNodes());
                 while (!(node->equals(searchable->getInitialState()))) {
                     node = node->getCameFrom();
                     path.push_back(node);
@@ -51,17 +51,16 @@ public:
                 //reverse(path.begin(), path.end());
                 // TODO
                 //return path;
+                solution = node->getState().getPath(path);
                 return solution;
             } else {
                 neighbors = searchable->getAllPossibleStates(node);
                 for (State<T> *neighbor : neighbors) {
                     if (!(stateIsInOpen(neighbor, queueOpen)) && !(stateIsInClosed(neighbor, statesClosed))) {
-                        // TODO - check if needed or done in getAllPossibleStates
                         neighbor->setCameFrom(node);
                         neighbor->setCost(neighbor->getCost() + node->getCost());
                         queueOpen.push(neighbor);
-                    } else {
-                        //if (neighbor->getCost() > (neighbor->getCost() - neighbor->getCameFrom()->getCost() + node->getCost()))
+                    } else if ((neighbor->getCameFrom() != nullptr) && (neighbor->getCost() > (neighbor->getCost() - neighbor->getCameFrom()->getCost() + node->getCost()))) {
 //                        if (!(stateIsInOpen(neighbor, queueOpen))) {
 //                            for (State<T> *s : statesClosed) {
 //                                if (neighbor->equals(s)) {
@@ -72,8 +71,7 @@ public:
                         if (stateIsInClosed(neighbor, statesClosed)) {
 
                         } else {
-                            neighbor->setCost(
-                                    neighbor->getCost() - neighbor->getCameFrom()->getCost() + node->getCost());
+                            neighbor->setCost(neighbor->getCost() - neighbor->getCameFrom()->getCost() + node->getCost());
                             neighbor->setCameFrom(node);
                             queueOpen = updateQueueOpen(queueOpen);
                         }

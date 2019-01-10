@@ -8,7 +8,7 @@ void MyClientHandler::handleClient(int sockfd) {
     char buffer[256];
     char *result;
     int n;
-    int howManySearchables = 0;
+    //int howManySearchables = 0;
     int searchableSize = 0;
     int i = 0;
     vector<string> data;
@@ -20,17 +20,18 @@ void MyClientHandler::handleClient(int sockfd) {
         exit(1);
     }
 
-    /* If connection is established then start communicating */
-    bzero(buffer, 256);
-    n = read(sockfd, buffer, 255);
-    if (n < 0) {
-        perror("ERROR reading from socket");
-        exit(1);
-    }
+//    /* If connection is established then start communicating */
+//    bzero(buffer, 256);
+//    n = read(sockfd, buffer, 255);
+//    if (n < 0) {
+//        perror("ERROR reading from socket");
+//        exit(1);
+//    }
 
-    howManySearchables = stoi(buffer);
+    //howManySearchables = stoi(buffer);
 
-    while (howManySearchables != 0) {
+    while (true) {
+        //while (howManySearchables != 0) {
         problem = "";
         searchable.clear();
         /* If connection is established then start communicating */
@@ -40,6 +41,9 @@ void MyClientHandler::handleClient(int sockfd) {
         if (n < 0) {
             perror("ERROR reading from socket");
             exit(1);
+        }
+        if (strcmp(buffer, "end") == 0) {
+            return;
         }
         searchableSize = stoi(buffer);
 

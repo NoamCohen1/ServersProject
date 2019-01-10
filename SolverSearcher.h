@@ -9,12 +9,14 @@
 #include "Searcher.h"
 #include "Point.h"
 
-class SolverSearcher : public Solver<Searchable<Point>, string> {
+class SolverSearcher : public Solver<Searchable<Point>*, string> {
     Searcher<Point>* searcher;
 public:
-    SolverSearcher(Searcher<Point>* searcher1) {
-        this->searcher = searcher1;
-    }
+    SolverSearcher(Searcher<Point> *searcher) : searcher(searcher) {}
+
+//    SolverSearcher(Searcher<Point>* searcher1) {
+//        this->searcher = searcher1;
+//    }
 
     virtual string solve(Searchable<Point>* p) {
         return this->searcher->search(p);

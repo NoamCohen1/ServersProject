@@ -11,7 +11,7 @@
 #include <vector>
 
 #define START_STRING 0
-#define DELIMITER "$"
+#define DELIMITER2 "$"
 
 
 class FileCacheManager : public CacheManager {

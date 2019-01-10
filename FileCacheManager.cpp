@@ -41,7 +41,7 @@ vector<string> FileCacheManager::split(string buffer) {
     vector<string> data;
     size_t pos = START_STRING;
     int i = START_STRING;
-    string delimiter = DELIMITER;
+    string delimiter = DELIMITER2;
     while ((pos = buffer.find(delimiter)) != string::npos) {
         data.push_back(buffer.substr(START_STRING, pos));
         buffer.erase(START_STRING, pos + delimiter.length());
@@ -61,6 +61,6 @@ void FileCacheManager::writeInfo(string prob, string solut) {
     if (!writeToFile) {
         throw "Failed opening file";
     }
-    writeToFile << prob << DELIMITER << solut << endl;
+    writeToFile << prob << DELIMITER2 << solut << endl;
     writeToFile.close();
 }
