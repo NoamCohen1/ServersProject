@@ -8,6 +8,7 @@
 #include "FileCacheManager.h"
 #include "SolverSearcher.h"
 #include "BFS.h"
+#include "DFS.h"
 
 int main() {
     std::cout << "Hello, World!" << std::endl;
@@ -84,7 +85,7 @@ int main() {
     searchable.push_back(goal);
 
     Searchable<Point>* m = new Matrix(searchable, initial, goal);
-    BFS<Point> * b = new BFS<Point>;
+    DFS<Point> * b = new DFS<Point>;
     string x = b->search(m);
     cout << x << endl;
 
