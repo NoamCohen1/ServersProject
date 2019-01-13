@@ -151,3 +151,19 @@ void MyClientHandler::initialSearchable(vector<State<Point>*> &searchable, int i
         searchable.push_back(state);
     }
 }
+
+vector<pair<double, pair<int, int>>> MyClientHandler::makePairs(vector<State<Point> *> searchable) {
+    vector<pair<double, pair<int, int>>> result;
+    for (int i = 0; i < searchable.size(); ++i) {
+        pair<int, int> pair1 = make_pair(searchable[i]->getState().getI(), searchable[i]->getState().getJ());
+        result.push_back(make_pair(searchable[i]->getCost(), pair1));
+    }
+    return result;
+}
+
+pair<double, pair<int, int>> MyClientHandler::makePairsOfGAndI(State<Point> *state) {
+    pair<double, pair<int, int>> result;
+    pair<int, int> pair1 = make_pair(state->getState().getI(), state->getState().getJ());
+    result = make_pair(state->getCost(), pair1);
+    return result;
+}

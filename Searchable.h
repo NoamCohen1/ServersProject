@@ -22,6 +22,11 @@ public:
         this->initialState = initialState;
         this->goalState = goalState;
     }
+
+    const vector<State<T> *> &getSearchable() const {
+        return this->searchable;
+    }
+
     virtual State<T>* getInitialState() = 0;
 
     virtual State<T>* getGoalState() = 0;
