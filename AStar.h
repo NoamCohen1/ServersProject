@@ -47,7 +47,7 @@ public:
         double grid[row][col];
         for (int k = 0; k < row; ++k) {
             for (int r = 0; r < col; ++r) {
-                grid[k][r] = matrix[(k * row) + r].first;
+                grid[k][r] = matrix[(k * col) + r].first;
             }
         }
 
