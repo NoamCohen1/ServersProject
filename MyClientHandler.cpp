@@ -13,6 +13,7 @@ void MyClientHandler::handleClient(int sockfd) {
     int i = 0;
     vector<string> data;
     vector<State<Point>*> searchable;
+    vector<vector<string>> temps;
     string problem = "";
 
     if (sockfd < 0) {
@@ -20,58 +21,13 @@ void MyClientHandler::handleClient(int sockfd) {
         exit(1);
     }
 
-//    /* If connection is established then start communicating */
-//    bzero(buffer, 256);
-//    n = read(sockfd, buffer, 255);
-//    if (n < 0) {
-//        perror("ERROR reading from socket");
-//        exit(1);
-//    }
-
-    //howManySearchables = stoi(buffer);
 
     while (true) {
-        //while (howManySearchables != 0) {
         problem = "";
         searchable.clear();
         /* If connection is established then start communicating */
-        // read the size
-        bzero(buffer, 256);
-        n = read(sockfd, buffer, 255);
-        if (n < 0) {
-            perror("ERROR reading from socket");
-            exit(1);
-        }
-        if (strcmp(buffer, "end") == 0) {
-            return;
-        }
-        searchableSize = stoi(buffer);
 
-        // read initial point
-        bzero(buffer, 256);
-        n = read(sockfd, buffer, 255);
-        if (n < 0) {
-            perror("ERROR reading from socket");
-            exit(1);
-        }
-        problem += buffer;
-        data = split(buffer);
-        Point initial(stoi(data[0]), stoi(data[1]));
-        data.clear();
-
-        // read goal point
-        bzero(buffer, 256);
-        n = read(sockfd, buffer, 255);
-        if (n < 0) {
-            perror("ERROR reading from socket");
-            exit(1);
-        }
-        problem += buffer;
-        data = split(buffer);
-        Point goal(stoi(data[0]), stoi(data[1]));
-        data.clear();
-
-        while (i != searchableSize) {
+        while (true) {
             // read the matrix
             bzero(buffer, 256);
             n = read(sockfd, buffer, 255);
@@ -79,15 +35,31 @@ void MyClientHandler::handleClient(int sockfd) {
                 perror("ERROR reading from socket");
                 exit(1);
             }
+            if (strcmp(buffer, "end") == 0) {
+                break;
+            }
             problem += buffer;
             data = split(buffer);
-            this->initialSearchable(searchable, i, data);
+            temps.push_back(data);
             data.clear();
-            ++i;
+        }
+        for (int j = 0; j < (temps.size() - 2); ++j) {
+            this->initialSearchable(searchable, j, temps[j]);
         }
 
-        Searchable<Point>* searchable1 = new Matrix(searchable, this->getInitialState(searchable, initial), this->getGoalState(searchable, goal));
+        Point initial(stoi((temps[temps.size() - 2])[0]), stoi((temps[temps.size() - 2])[1]));
+        data.clear();
 
+        Point goal(stoi((temps[temps.size() - 1])[0]), stoi((temps[temps.size() - 1])[1]));
+        data.clear();
+
+        Searchable<Point>* searchable1 = new Matrix(searchable, this->getInitialState(searchable, initial), this->getGoalState(searchable, goal));
+        vector<pair<double, pair<int, int>>> pairsVector = this->makePairs(searchable1->getSearchable());
+        searchable1->setPairsVector(pairsVector);
+        pair<double, pair<int, int>> initialPair = this->makePairsOfGAndI(searchable1->getInitialState());
+        searchable1->setInitialPair(initialPair);
+        pair<double, pair<int, int>> goalPair = this->makePairsOfGAndI(searchable1->getGoalState());
+        searchable1->setGoalPair(goalPair);
 
         //get solution
         if (this->cacheManager->doWeHaveSolution(problem)) {

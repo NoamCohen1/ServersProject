@@ -13,9 +13,6 @@
 
 using namespace std;
 
-#define ROW 9
-#define COL 10
-
 // Creating a shortcut for int, int pair type
 typedef pair<int, int> Pair;
 
@@ -33,17 +30,16 @@ struct cell {
 
 template<class T>
 class AStar : public Searcher<T> {
-    MyClientHandler myClientHandler;
 public:
     /* A Function to find the shortest path between a given source cell to
      * a destination cell according to A* Search Algorithm */
     virtual string search(Searchable<T> *searchable) {
         string result = "";
-        vector<pPair> matrix = myClientHandler.makePairs(searchable->getSearchable());
-        Pair src = myClientHandler.makePairsOfGAndI(searchable->getInitialState()).second;
-        Pair dest = myClientHandler.makePairsOfGAndI(searchable->getGoalState()).second;
-        int row = returnRow(matrix);
-        int col = returnCol(matrix);
+        vector<pPair> matrix = searchable->getPairsVector();
+        Pair src = (searchable->getInitialPair()).second;
+        Pair dest = (searchable->getGoalPair()).second;
+        int row = returnRow(matrix) + 1;
+        int col = returnCol(matrix) + 1;
         double grid[row][col];
         for (int k = 0; k < row; ++k) {
             for (int r = 0; r < col; ++r) {
@@ -127,27 +123,6 @@ public:
             j = p.second.second;
             closedList[i][j] = true;
 
-            /*
-             Generating all the 8 successor of this cell
-
-                 N.W   N   N.E
-                   \   |   /
-                    \  |  /
-                 W----Cell----E
-                      / | \
-                    /   |  \
-                 S.W    S   S.E
-
-             Cell-->Popped Cell (i, j)
-             N -->  North       (i-1, j)
-             S -->  South       (i+1, j)
-             E -->  East        (i, j+1)
-             W -->  West           (i, j-1)
-             N.E--> North-East  (i-1, j+1)
-             N.W--> North-West  (i-1, j-1)
-             S.E--> South-East  (i+1, j+1)
-             S.W--> South-West  (i+1, j-1)*/
-
             // To store the 'g', 'h' and 'f' of the 8 successors
             double gNew, hNew, fNew;
 
@@ -161,16 +136,13 @@ public:
                     // Set the Parent of the destination cell
                     cellDetails[i - 1][j].parent_i = i;
                     cellDetails[i - 1][j].parent_j = j;
-                    //printf("The destination cell is found\n");
-                    tracePath(cellDetails, dest);
-                    //foundDest = true;
-                    return tracePath;
+                    return tracePath((cell *) cellDetails, dest, col);
                 }
                     // If the successor is already on the closed
                     // list or if it is blocked, then ignore it.
                     // Else do the following
                 else if (closedList[i - 1][j] == false && ((grid[i - 1][j]) != -1)) {
-                    gNew = cellDetails[i][j].g + 1.0;
+                    gNew = cellDetails[i][j].g + grid[i - 1][j];
                     hNew = calculateHValue(i - 1, j, dest);
                     fNew = gNew + hNew;
 
@@ -184,8 +156,7 @@ public:
                     // using 'f' cost as the measure.
                     if (cellDetails[i - 1][j].f == FLT_MAX ||
                         cellDetails[i - 1][j].f > fNew) {
-                        openList.insert(make_pair(fNew,
-                                                  make_pair(i - 1, j)));
+                        openList.insert(make_pair(fNew, make_pair(i - 1, j)));
 
                         // Update the details of this cell
                         cellDetails[i - 1][j].f = fNew;
@@ -207,16 +178,13 @@ public:
                     // Set the Parent of the destination cell
                     cellDetails[i + 1][j].parent_i = i;
                     cellDetails[i + 1][j].parent_j = j;
-                    //printf("The destination cell is found\n");
-                    tracePath(cellDetails, dest);
-                    //foundDest = true;
-                    return tracePath;
+                    return tracePath((cell *) cellDetails, dest, col);
                 }
                     // If the successor is already on the closed
                     // list or if it is blocked, then ignore it.
                     // Else do the following
                 else if (closedList[i + 1][j] == false && ((grid[i + 1][j]) != -1)) {
-                    gNew = cellDetails[i][j].g + 1.0;
+                    gNew = cellDetails[i][j].g + grid[i + 1][j];
                     hNew = calculateHValue(i + 1, j, dest);
                     fNew = gNew + hNew;
 
@@ -251,17 +219,14 @@ public:
                     // Set the Parent of the destination cell
                     cellDetails[i][j + 1].parent_i = i;
                     cellDetails[i][j + 1].parent_j = j;
-                    //printf("The destination cell is found\n");
-                    tracePath(cellDetails, dest);
-                    //foundDest = true;
-                    return tracePath;
+                    return tracePath((cell *) cellDetails, dest, col);
                 }
 
                     // If the successor is already on the closed
                     // list or if it is blocked, then ignore it.
                     // Else do the following
                 else if (closedList[i][j + 1] == false && ((grid[i][j + 1]) != -1)) {
-                    gNew = cellDetails[i][j].g + 1.0;
+                    gNew = cellDetails[i][j].g + grid[i][j + 1];
                     hNew = calculateHValue(i, j + 1, dest);
                     fNew = gNew + hNew;
 
@@ -275,8 +240,7 @@ public:
                     // using 'f' cost as the measure.
                     if (cellDetails[i][j + 1].f == FLT_MAX ||
                         cellDetails[i][j + 1].f > fNew) {
-                        openList.insert(make_pair(fNew,
-                                                  make_pair(i, j + 1)));
+                        openList.insert(make_pair(fNew, make_pair(i, j + 1)));
 
                         // Update the details of this cell
                         cellDetails[i][j + 1].f = fNew;
@@ -298,17 +262,14 @@ public:
                     // Set the Parent of the destination cell
                     cellDetails[i][j - 1].parent_i = i;
                     cellDetails[i][j - 1].parent_j = j;
-                    //printf("The destination cell is found\n");
-                    tracePath(cellDetails, dest);
-                    //foundDest = true;
-                    return tracePath;
+                    return tracePath((cell *) cellDetails, dest, col);
                 }
 
                     // If the successor is already on the closed
                     // list or if it is blocked, then ignore it.
                     // Else do the following
-                else if (closedList[i][j - 1] == false && ((grid[i][j - 1])!= -1)) {
-                    gNew = cellDetails[i][j].g + 1.0;
+                else if (closedList[i][j - 1] == false && ((grid[i][j - 1]) != -1)) {
+                    gNew = cellDetails[i][j].g + grid[i][j - 1];
                     hNew = calculateHValue(i, j - 1, dest);
                     fNew = gNew + hNew;
 
@@ -322,8 +283,7 @@ public:
                     // using 'f' cost as the measure.
                     if (cellDetails[i][j - 1].f == FLT_MAX ||
                         cellDetails[i][j - 1].f > fNew) {
-                        openList.insert(make_pair(fNew,
-                                                  make_pair(i, j - 1)));
+                        openList.insert(make_pair(fNew, make_pair(i, j - 1)));
 
                         // Update the details of this cell
                         cellDetails[i][j - 1].f = fNew;
@@ -340,8 +300,8 @@ public:
         // list is empty, then we conclude that we failed to
         // reach the destiantion cell. This may happen when the
         // there is no way to destination cell (due to blockages)
-        if (foundDest == false)
-            return "-1";
+//        if (foundDest == false)
+        return "-1";
     }
 
     int returnRow(vector<pPair> matrix) {
@@ -373,16 +333,6 @@ public:
                (col >= 0) && (col < maxCol);
     }
 
-// A Utility Function to check whether the given cell is
-// blocked or not
-//    bool isUnBlocked(int grid[][COL], int row, int col) {
-//        // Returns true if the cell is not blocked else false
-//        if (grid[row][col] == (-1))
-//            return (false);
-//        else
-//            return (true);
-//    }
-
 // A Utility Function to check whether destination cell has
 // been reached or not
     bool isDestination(int row, int col, Pair dest) {
@@ -394,27 +344,27 @@ public:
 
 // A Utility Function to calculate the 'h' heuristics.
     double calculateHValue(int row, int col, Pair dest) {
-        // Return using the distance formula
-        return ((double) sqrt((row - dest.first) * (row - dest.first)
-                              + (col - dest.second) * (col - dest.second)));
+        // Return using the distance formula of manhattan
+        return (double) (abs(row - dest.first) + abs(col - dest.second));
     }
 
 // A Utility Function to trace the path from the source
 // to destination
-    string tracePath(cell cellDetails[][COL], Pair dest) {
+    string tracePath(cell *cellDetails, Pair dest, int col) {
         //printf("\nThe Path is ");
-        int row = dest.first;
-        int col = dest.second;
+        int i = dest.first;
+        int j = dest.second;
         stack<Pair> Path;
-        while (!(cellDetails[row][col].parent_i == row && cellDetails[row][col].parent_j == col)) {
-            Path.push(make_pair(row, col));
-            int temp_row = cellDetails[row][col].parent_i;
-            int temp_col = cellDetails[row][col].parent_j;
-            row = temp_row;
-            col = temp_col;
+        while (!(((*(cellDetails + (i * col) + j)).parent_i == i) &&
+                 ((*(cellDetails + (i * col) + j)).parent_j == j))) {
+            Path.push(make_pair(i, j));
+            int temp_row = (*(cellDetails + (i * col) + j)).parent_i;
+            int temp_col = (*(cellDetails + (i * col) + j)).parent_j;
+            i = temp_row;
+            j = temp_col;
         }
 
-        Path.push(make_pair(row, col));
+        Path.push(make_pair(i, j));
         return getPath(Path);
     }
 
@@ -429,7 +379,8 @@ public:
 
     string getPath(stack<Pair> Path) {
         string path = "";
-        for (int i = 0; i < (Path.size() - 1); ++i) {
+        int size = Path.size();
+        for (int i = 0; i < (size - 1); ++i) {
             pair<int, int> p1 = Path.top();
             Path.pop();
             pair<int, int> p2 = Path.top();
@@ -437,13 +388,13 @@ public:
             int j1 = p1.second;
             int i2 = p2.first;
             int j2 = p2.second;
-            if ((i1 == i2) && (j1 == (j2 + 1))) {
+            if ((i1 == i2) && (j1 == (j2 - 1))) {
                 path += "R";
-            } else if ((i1 == i2) && (j1 == (j2 - 1))) {
+            } else if ((i1 == i2) && (j1 == (j2 + 1))) {
                 path += "L";
-            } else if ((i1 == (i2 + 1)) && (j1 == j2)) {
-                path += "D";
             } else if ((i1 == (i2 - 1)) && (j1 == j2)) {
+                path += "D";
+            } else if ((i1 == (i2 + 1)) && (j1 == j2)) {
                 path += "U";
             }
         }

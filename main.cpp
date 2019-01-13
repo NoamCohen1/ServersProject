@@ -9,6 +9,24 @@
 #include "SolverSearcher.h"
 #include "BFS.h"
 #include "DFS.h"
+#include "AStar.h"
+
+
+//vector<pair<double, pair<int, int>>> makePairs(vector<State<Point> *> searchable) {
+//    vector<pair<double, pair<int, int>>> result;
+//    for (int i = 0; i < searchable.size(); ++i) {
+//        pair<int, int> pair1 = make_pair(searchable[i]->getState().getI(), searchable[i]->getState().getJ());
+//        result.push_back(make_pair(searchable[i]->getCost(), pair1));
+//    }
+//    return result;
+//}
+//
+//pair<double, pair<int, int>> makePairsOfGAndI(State<Point> *state) {
+//    pair<double, pair<int, int>> result;
+//    pair<int, int> pair1 = make_pair(state->getState().getI(), state->getState().getJ());
+//    result = make_pair(state->getCost(), pair1);
+//    return result;
+//}
 
 int main() {
     std::cout << "Hello, World!" << std::endl;
@@ -70,30 +88,86 @@ int main() {
 //    string x = b->search(m);
 //    cout << x << endl;
 
-    State<Point>* initial = new State<Point>(Point(0, 0), 3);
-    State<Point>* goal = new State<Point>(Point(2, 2), 6);
+//    State<Point>* initial = new State<Point>(Point(0, 0), 3);
+//    State<Point>* goal = new State<Point>(Point(2, 2), 6);
+//
+//    vector<State<Point> *> searchable;
+//    searchable.push_back(initial);
+//    searchable.push_back(new State<Point>(Point(0, 1), 2));
+//    searchable.push_back(new State<Point>(Point(0, 2), 2));
+//    searchable.push_back(new State<Point>(Point(1, 0), 1));
+//    searchable.push_back(new State<Point>(Point(1, 1), 7));
+//    searchable.push_back(new State<Point>(Point(1, 2), 5));
+//    searchable.push_back(new State<Point>(Point(2, 0), 100));
+//    searchable.push_back(new State<Point>(Point(2, 1), 4));
+//    searchable.push_back(goal);
+//
+//    Searchable<Point>* m = new Matrix(searchable, initial, goal);
+//    AStar<Point> * b = new AStar<Point>();
+//    string x = b->search(m);
+//    cout << x << endl;
 
-    vector<State<Point> *> searchable;
-    searchable.push_back(initial);
-    searchable.push_back(new State<Point>(Point(0, 1), 2));
-    searchable.push_back(new State<Point>(Point(0, 2), 2));
-    searchable.push_back(new State<Point>(Point(1, 0), 1));
-    searchable.push_back(new State<Point>(Point(1, 1), 7));
-    searchable.push_back(new State<Point>(Point(1, 2), 5));
-    searchable.push_back(new State<Point>(Point(2, 0), 100));
-    searchable.push_back(new State<Point>(Point(2, 1), 4));
-    searchable.push_back(goal);
+    MySerialServer* d = new MySerialServer();
+    Solver<Searchable<Point>*, string>* solver = new SolverSearcher(new BestFirstSearch<Point>());
+    CacheManager* cacheManager = new FileCacheManager();
+    ClientHandler* ds = new MyClientHandler(solver, cacheManager);
+    d->open(5400,ds);
+    while (true) {}
 
-    Searchable<Point>* m = new Matrix(searchable, initial, goal);
-    DFS<Point> * b = new DFS<Point>;
-    string x = b->search(m);
-    cout << x << endl;
 
-//    MySerialServer* d = new MySerialServer();
-//    Solver<Searchable<Point>*, string>* solver = new SolverSearcher(new BestFirstSearch<Point>());
-//    CacheManager* cacheManager = new FileCacheManager();
-//    ClientHandler* ds = new MyClientHandler(solver, cacheManager);
-//    d->open(5400,ds);
-//    while (true) {}
+
+
+
+
+///* Description of the Grid-
+//     1--> The cell is not blocked
+//     0--> The cell is blocked    */
+//    int grid[ROW][COL] =
+//            {
+//                    { 1, 0, 1, 1, 1, 1, 0, 1, 1, 1 },
+//                    { 1, 1, 1, 0, 1, 1, 1, 0, 1, 1 },
+//                    { 1, 1, 1, 0, 1, 1, 0, 1, 0, 1 },
+//                    { 0, 0, 1, 0, 1, 0, 0, 0, 0, 1 },
+//                    { 1, 1, 1, 0, 1, 1, 1, 0, 1, 0 },
+//                    { 1, 0, 1, 1, 1, 1, 0, 1, 0, 0 },
+//                    { 1, 0, 0, 0, 0, 1, 0, 0, 0, 1 },
+//                    { 1, 0, 1, 1, 1, 1, 0, 1, 1, 1 },
+//                    { 1, 1, 1, 0, 0, 0, 1, 0, 0, 1 }
+//            };
+//
+//    // Source is the left-most bottom-most corner
+//    Pair src = make_pair(8, 0);
+//
+//    // Destination is the left-most top-most corner
+//    Pair dest = make_pair(0, 0);
+//
+//    aStarSearch(grid, src, dest);
+
+
+//    State<Point>* initial = new State<Point>(Point(0, 0), 3);
+//    State<Point>* goal = new State<Point>(Point(2, 2), 6);
+//
+//    vector<State<Point> *> searchable;
+//    searchable.push_back(initial);
+//    searchable.push_back(new State<Point>(Point(0, 1), 2));
+//    searchable.push_back(new State<Point>(Point(0, 2), 2));
+//    searchable.push_back(new State<Point>(Point(1, 0), 1));
+//    searchable.push_back(new State<Point>(Point(1, 1), 7));
+//    searchable.push_back(new State<Point>(Point(1, 2), 5));
+//    searchable.push_back(new State<Point>(Point(2, 0), 100));
+//    searchable.push_back(new State<Point>(Point(2, 1), 4));
+//    searchable.push_back(goal);
+//
+//    Searchable<Point>* m = new Matrix(searchable, initial, goal);
+//    vector<pair<double, pair<int, int>>> pairsVector = makePairs(m->getSearchable());
+//    pair<double, pair<int, int>> initialPair = makePairsOfGAndI(initial);
+//    pair<double, pair<int, int>> goalPair = makePairsOfGAndI(goal);
+//    m->setPairsVector(pairsVector);
+//    m->setInitialPair(initialPair);
+//    m->setGoalPair(goalPair);
+//    AStar<Point> * b = new AStar<Point>();
+//    string x = b->search(m);
+//    cout << x << endl;
+
     return 0;
 }
