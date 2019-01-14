@@ -1,7 +1,3 @@
-//
-// Created by gal on 1/13/19.
-//
-
 #ifndef SERVERSPROJECT_ASTAR_H
 #define SERVERSPROJECT_ASTAR_H
 
@@ -19,7 +15,7 @@ typedef pair<int, int> Pair;
 // Creating a shortcut for pair<int, pair<int, int>> type
 typedef pair<double, pair<int, int>> pPair;
 
-// A structure to hold the neccesary parameters
+// A structure to hold the necessary parameters
 struct cell {
     // Row and Column index of its parent
     // Note that 0 <= i <= ROW-1 & 0 <= j <= COL-1
@@ -35,6 +31,9 @@ public:
      * a destination cell according to A* Search Algorithm */
     virtual string search(Searchable<T> *searchable) {
         string result = "";
+        string solutionToFile = "";
+        int howManyNodes = 0;
+        string finalCost = "";
         vector<pPair> matrix = searchable->getPairsVector();
         Pair src = (searchable->getInitialPair()).second;
         Pair dest = (searchable->getGoalPair()).second;
@@ -47,17 +46,21 @@ public:
             }
         }
 
-        //void aStarSearch(int grid[][COL], Pair src, Pair dest)
-
         // Either the source or the destination is blocked
         if ((searchable->getInitialState()->getCost() == (-1)) ||
             (searchable->getGoalState()->getCost() == (-1))) {
             result = "-1";
+            solutionToFile = "-1";
+            searchable->writeCostAndNodes(solutionToFile);
             return result;
         }
 
         // If the destination cell is the same as source cell
         if (searchable->getInitialState()->equals(searchable->getGoalState())) {
+            finalCost = to_string(searchable->getInitialState()->getCost());
+            howManyNodes = 1;
+            solutionToFile = finalCost + "," + to_string(howManyNodes);
+            searchable->writeCostAndNodes(solutionToFile);
             return result;
         }
 
@@ -69,10 +72,7 @@ public:
 
         // Declare a 2D array of structure to hold the details
         //of that cell
-        //cell cellDetails[row][col];
         cell cellDetails[row][col];
-        //vector<cell> allCells;
-
 
         int i, j;
 
@@ -122,6 +122,7 @@ public:
             i = p.second.first;
             j = p.second.second;
             closedList[i][j] = true;
+            ++howManyNodes;
 
             // To store the 'g', 'h' and 'f' of the 8 successors
             double gNew, hNew, fNew;
@@ -136,6 +137,9 @@ public:
                     // Set the Parent of the destination cell
                     cellDetails[i - 1][j].parent_i = i;
                     cellDetails[i - 1][j].parent_j = j;
+                    solutionToFile =
+                            traceCost((double *) grid, (cell *) cellDetails, dest, col) + "," + to_string(howManyNodes);
+                    searchable->writeCostAndNodes(solutionToFile);
                     return tracePath((cell *) cellDetails, dest, col);
                 }
                     // If the successor is already on the closed
@@ -178,6 +182,9 @@ public:
                     // Set the Parent of the destination cell
                     cellDetails[i + 1][j].parent_i = i;
                     cellDetails[i + 1][j].parent_j = j;
+                    solutionToFile =
+                            traceCost((double *) grid, (cell *) cellDetails, dest, col) + "," + to_string(howManyNodes);
+                    searchable->writeCostAndNodes(solutionToFile);
                     return tracePath((cell *) cellDetails, dest, col);
                 }
                     // If the successor is already on the closed
@@ -219,6 +226,9 @@ public:
                     // Set the Parent of the destination cell
                     cellDetails[i][j + 1].parent_i = i;
                     cellDetails[i][j + 1].parent_j = j;
+                    solutionToFile =
+                            traceCost((double *) grid, (cell *) cellDetails, dest, col) + "," + to_string(howManyNodes);
+                    searchable->writeCostAndNodes(solutionToFile);
                     return tracePath((cell *) cellDetails, dest, col);
                 }
 
@@ -262,6 +272,9 @@ public:
                     // Set the Parent of the destination cell
                     cellDetails[i][j - 1].parent_i = i;
                     cellDetails[i][j - 1].parent_j = j;
+                    solutionToFile =
+                            traceCost((double *) grid, (cell *) cellDetails, dest, col) + "," + to_string(howManyNodes);
+                    searchable->writeCostAndNodes(solutionToFile);
                     return tracePath((cell *) cellDetails, dest, col);
                 }
 
@@ -300,7 +313,8 @@ public:
         // list is empty, then we conclude that we failed to
         // reach the destiantion cell. This may happen when the
         // there is no way to destination cell (due to blockages)
-//        if (foundDest == false)
+        solutionToFile = "-1";
+        searchable->writeCostAndNodes(solutionToFile);
         return "-1";
     }
 
@@ -351,7 +365,6 @@ public:
 // A Utility Function to trace the path from the source
 // to destination
     string tracePath(cell *cellDetails, Pair dest, int col) {
-        //printf("\nThe Path is ");
         int i = dest.first;
         int j = dest.second;
         stack<Pair> Path;
@@ -368,14 +381,32 @@ public:
         return getPath(Path);
     }
 
-    bool stateIsInVisited(State<T> *state, vector<State<T> *> visited) {
-        for (State<T> *s : visited) {
-            if (state->equals(s)) {
-                return true;
-            }
+    string traceCost(double *grid, cell *cellDetails, Pair dest, int col) {
+        int i = dest.first;
+        int j = dest.second;
+        double cost = 0;
+        string result = "";
+        while (!(((*(cellDetails + (i * col) + j)).parent_i == i) &&
+                 ((*(cellDetails + (i * col) + j)).parent_j == j))) {
+            cost += (*(grid + (i * col) + j));
+            int temp_row = (*(cellDetails + (i * col) + j)).parent_i;
+            int temp_col = (*(cellDetails + (i * col) + j)).parent_j;
+            i = temp_row;
+            j = temp_col;
         }
-        return false;
+        cost += (*(grid + (i * col) + j));
+        result += to_string((int) cost);
+        return result;
     }
+
+//    bool stateIsInVisited(State<T> *state, vector<State<T> *> visited) {
+//        for (State<T> *s : visited) {
+//            if (state->equals(s)) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 
     string getPath(stack<Pair> Path) {
         string path = "";

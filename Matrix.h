@@ -5,6 +5,8 @@
 #ifndef SERVERSPROJECT_MATRIX_H
 #define SERVERSPROJECT_MATRIX_H
 
+#include <fstream>
+#include <vector>
 #include "Searchable.h"
 #include "Point.h"
 
@@ -19,7 +21,7 @@ public:
 
     virtual vector<State<Point>*> getAllPossibleStates(State<Point>* state);
 
-    virtual void writeCostAndNodes();
+    virtual void writeCostAndNodes(string solution);
 };
 
 

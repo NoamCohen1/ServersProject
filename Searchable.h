@@ -6,6 +6,7 @@
 #define SERVERSPROJECT_SEARCHABLE_H
 
 #include <vector>
+#include <string>
 #include "State.h"
 
 using namespace std;
@@ -60,6 +61,6 @@ public:
         this->goalPair = goalPair;
     }
 
-    //virtual void writeCostAndNodes();
+    virtual void writeCostAndNodes(string solution) = 0;
 };
 #endif //SERVERSPROJECT_SEARCHABLE_H

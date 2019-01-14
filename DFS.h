@@ -14,6 +14,9 @@ class DFS : public Searcher<T> {
 public:
     virtual string search(Searchable<T> *searchable) {
         string solution = "";
+        string solutionToFile = "";
+        int howManyNodes = 0;
+        double finalCost = 0;
         vector<State<T>*> visited;
         // Create a queue for BFS
         stack<State<T>*> statesStack;
@@ -21,6 +24,8 @@ public:
 
         if (searchable->getInitialState()->getCost() == (-1)) {
             solution = "-1";
+            solutionToFile = "-1";
+            searchable->writeCostAndNodes(solutionToFile);
             return solution;
         }
 
@@ -30,20 +35,23 @@ public:
         while(!statesStack.empty()) {
             // Dequeue a vertex from queue
             State<T>* node = statesStack.top();
-            //cout << s << " ";
             statesStack.pop();
+            ++howManyNodes;
             if (!stateIsInVisited(node, visited)) {
                 visited.push_back(node);
             }
             if (node->equals(searchable->getGoalState())) {
                 vector<State<T> *> path;
                 path.push_back(node);
-                //solution += to_string((int) node->getCost()) + "," + to_string(node->getHowManyNodes());
+                finalCost += node->getCost();
                 while (!(node->equals(searchable->getInitialState()))) {
                     node = node->getCameFrom();
+                    finalCost += node->getCost();
                     path.push_back(node);
                 }
                 solution = node->getState().getPath(path);
+                solutionToFile += to_string((int) finalCost) + "," + to_string(howManyNodes);
+                searchable->writeCostAndNodes(solutionToFile);
                 return solution;
             }
             neighbors = searchable->getAllPossibleStates(node);
@@ -58,6 +66,8 @@ public:
             }
         }
         solution = "-1";
+        solutionToFile = "-1";
+        searchable->writeCostAndNodes(solutionToFile);
         return solution;
     }
 

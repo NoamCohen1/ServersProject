@@ -28,6 +28,7 @@ public:
         vector<State<T> *> statesClosed;
         vector<State<T> *> neighbors;
         string solution = "";
+        string solutionToFile = "";
         while (!queueOpen.empty()) {
             State<T> *node = queueOpen.top();
             // if the initial point is unreachable - does not have any neighbors
@@ -40,15 +41,15 @@ public:
             if (node->equals(searchable->getGoalState())) {
                 // update how many nodes the algorithm developed
                 node->setHowManyNodes(statesClosed.size());
-                // call func to return the path by the places
-                // TODO
                 vector<State<T> *> path;
                 path.push_back(node);
-                //solution += to_string((int) node->getCost()) + "," + to_string(node->getHowManyNodes());
+                solutionToFile += to_string((int) node->getCost()) + "," + to_string(statesClosed.size());
+                searchable->writeCostAndNodes(solutionToFile);
                 while (!(node->equals(searchable->getInitialState()))) {
                     node = node->getCameFrom();
                     path.push_back(node);
                 }
+                // call func to return the path by the places
                 solution = node->getState().getPath(path);
                 return solution;
             } else {
@@ -78,6 +79,8 @@ public:
             }
         }
         solution = "-1";
+        solutionToFile = "-1";
+        searchable->writeCostAndNodes(solutionToFile);
         return solution;
     }
 

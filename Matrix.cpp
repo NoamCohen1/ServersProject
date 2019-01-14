@@ -29,6 +29,12 @@ State<Point>* Matrix::getInitialState() {
     return this->initialState;
 }
 
-void Matrix::writeCostAndNodes() {
-
+void Matrix::writeCostAndNodes(string solution) {
+    ofstream writeToFile;
+    writeToFile.open("solution.txt", ofstream::out |ofstream::app);
+    if (!writeToFile) {
+        throw "Failed opening file";
+    }
+    writeToFile << solution << endl;
+    writeToFile.close();
 }
