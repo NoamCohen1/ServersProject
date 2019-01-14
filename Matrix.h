@@ -18,6 +18,8 @@ public:
     virtual State<Point>* getGoalState();
 
     virtual vector<State<Point>*> getAllPossibleStates(State<Point>* state);
+
+    virtual void writeCostAndNodes();
 };
 
 

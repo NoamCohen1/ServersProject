@@ -28,3 +28,7 @@ State<Point>* Matrix::getGoalState() {
 State<Point>* Matrix::getInitialState() {
     return this->initialState;
 }
+
+void Matrix::writeCostAndNodes() {
+
+}

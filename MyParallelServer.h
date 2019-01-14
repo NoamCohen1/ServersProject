@@ -5,15 +5,26 @@
 #ifndef SERVERSPROJECT_MYPARALLELSERVER_H
 #define SERVERSPROJECT_MYPARALLELSERVER_H
 
-#include <cstring>
+#include <netinet/in.h>
+#include <strings.h>
+#include <unistd.h>
+#include <thread>
 #include "Server.h"
-class MyParallelServer: public Server{
+#include "MyClientHandler.h"
+
+class MyParallelServer : public Server {
+    struct info *paramInfo = new info();
+    vector<pthread_t> threadList;
+    int port;
+    int sockfd;
+    int serverfd;
+    vector <pthread_t> threads;
 public:
-    virtual void open(int port, ClientHandler* handler);
+    void open(int port, ClientHandler *cH);
 
-    static void openSocket(int port, ClientHandler* handler);
+    void stop();
 
-    virtual void stop();
+    static void* threadFunc (void* data);
 };
 
 

@@ -59,5 +59,7 @@ public:
     void setGoalPair(pair<double, pair<int, int>> goalPair) {
         this->goalPair = goalPair;
     }
+
+    //virtual void writeCostAndNodes();
 };
 #endif //SERVERSPROJECT_SEARCHABLE_H

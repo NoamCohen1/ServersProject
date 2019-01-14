@@ -10,6 +10,7 @@
 #include "BFS.h"
 #include "DFS.h"
 #include "AStar.h"
+#include "MyParallelServer.h"
 
 
 //vector<pair<double, pair<int, int>>> makePairs(vector<State<Point> *> searchable) {
@@ -47,14 +48,6 @@ int main() {
 //
 //    priority_queue<State<Point>*, vector<State<Point>*>,Comp> p;
 //
-//    int one = 1;
-//    int two = 2;
-//    int eight = 8;
-//    int three = 3;
-//    int seven = 7;
-//    int five = 5;
-//    int ten = 10;
-//
 //
 //    p.push(new State<Point>(new Point(2, 3), 3));
 //    p.push(new State<Point>(new Point(7,0), 2));
@@ -68,18 +61,20 @@ int main() {
 //    p.pop();
 //    cout << p.top()->getCost() << endl;
 //    p.pop();
+
+
 //    State<Point>* initial = new State<Point>(Point(0, 0), 3);
 //    State<Point>* goal = new State<Point>(Point(2, 2), 6);
 //
 //    vector<State<Point> *> searchable;
 //    searchable.push_back(initial);
 //    searchable.push_back(new State<Point>(Point(0, 1), 2));
-//    searchable.push_back(new State<Point>(Point(0, 2), -1));
-//    searchable.push_back(new State<Point>(Point(1, 0), 1));
-//    searchable.push_back(new State<Point>(Point(1, 1), -1));
-//    searchable.push_back(new State<Point>(Point(1, 2), 5));
-//    searchable.push_back(new State<Point>(Point(2, 0), 100));
-//    searchable.push_back(new State<Point>(Point(2, 1), 4));
+//    searchable.push_back(new State<Point>(Point(0, 2), 1));
+//    searchable.push_back(new State<Point>(Point(1, 0), 7));
+//    searchable.push_back(new State<Point>(Point(1, 1), 7));
+//    searchable.push_back(new State<Point>(Point(1, 2), 100));
+//    searchable.push_back(new State<Point>(Point(2, 0), 2));
+//    searchable.push_back(new State<Point>(Point(2, 1), 1));
 //    searchable.push_back(goal);
 //
 //
@@ -107,7 +102,9 @@ int main() {
 //    string x = b->search(m);
 //    cout << x << endl;
 
-    MySerialServer* d = new MySerialServer();
+
+
+    MySerialServer* d = new  MySerialServer();
     Solver<Searchable<Point>*, string>* solver = new SolverSearcher(new BestFirstSearch<Point>());
     CacheManager* cacheManager = new FileCacheManager();
     ClientHandler* ds = new MyClientHandler(solver, cacheManager);

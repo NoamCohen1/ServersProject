@@ -8,6 +8,7 @@
 #include <queue>
 #include "Searcher.h"
 #include "State.h"
+#include <iostream>
 
 template<class T>
 class BestFirstSearch : public Searcher<T> {
@@ -48,9 +49,6 @@ public:
                     node = node->getCameFrom();
                     path.push_back(node);
                 }
-                //reverse(path.begin(), path.end());
-                // TODO
-                //return path;
                 solution = node->getState().getPath(path);
                 return solution;
             } else {
@@ -69,7 +67,7 @@ public:
 //                                }
 //                            }
                         if (stateIsInClosed(neighbor, statesClosed)) {
-
+                            //cout << "oof" << endl;
                         } else {
                             neighbor->setCost(neighbor->getCost() - neighbor->getCameFrom()->getCost() + node->getCost());
                             neighbor->setCameFrom(node);

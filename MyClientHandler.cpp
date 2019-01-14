@@ -25,6 +25,7 @@ void MyClientHandler::handleClient(int sockfd) {
     while (true) {
         problem = "";
         searchable.clear();
+        temps.clear();
         /* If connection is established then start communicating */
 
         while (true) {
@@ -38,7 +39,9 @@ void MyClientHandler::handleClient(int sockfd) {
             if (strcmp(buffer, "end") == 0) {
                 break;
             }
+            problem += "(";
             problem += buffer;
+            problem += ")";
             data = split(buffer);
             temps.push_back(data);
             data.clear();
@@ -65,15 +68,22 @@ void MyClientHandler::handleClient(int sockfd) {
         if (this->cacheManager->doWeHaveSolution(problem)) {
             string str = this->cacheManager->getSolution(problem);
             result = const_cast<char *>(str.c_str());
+            //printf("Here is the message after: %s\n", result);
 
         } else {
-            string solution = this->solver->solve(searchable1);
+            string solution = "";
+            //result = "";
+            solution = this->solver->solve(searchable1);
             this->cacheManager->addSolToMap(problem, solution);
             result = const_cast<char *>(solution.c_str());
             this->cacheManager->writeInfo(problem, result);
+            //printf("Here is the message after: %s\n", result);
         }
 
         printf("Here is the message after: %s\n", result);
+        //printf("Here is the message");
+        //result = "";
+
 
         n = write(sockfd, result, strlen(result));
 
@@ -81,6 +91,7 @@ void MyClientHandler::handleClient(int sockfd) {
             perror("ERROR writing to socket");
             exit(1);
         }
+        delete(searchable1);
     }
 }
 
