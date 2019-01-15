@@ -19,6 +19,10 @@ public:
     void stop();
 
     static void *threadFunc(void *data);
+
+    virtual ~MyParallelServer() {
+        delete (paramInfo);
+    }
 };
 
 #endif //SERVERSPROJECT_MYPARALLELSERVER_H

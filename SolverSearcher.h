@@ -13,6 +13,10 @@ public:
     virtual string solve(Searchable<Point> *p) {
         return this->searcher->search(p);
     }
+
+    virtual ~SolverSearcher() {
+        delete (searcher);
+    }
 };
 
 #endif //SERVERSPROJECT_SOLVERSEARCHER_H
