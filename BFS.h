@@ -13,10 +13,10 @@ public:
         string solutionToFile = "";
         int howManyNodes = 0;
         double finalCost = 0;
-        vector<State<T>*> visited;
+        vector<State<T> *> visited;
         // Create a queue for BFS
-        queue<State<T>*> statesQueue;
-        vector<State<T>*> neighbors;
+        queue<State<T> *> statesQueue;
+        vector<State<T> *> neighbors;
 
         if (searchable->getInitialState()->getCost() == (-1)) {
             solution = "-1";
@@ -29,9 +29,9 @@ public:
         visited.push_back(searchable->getInitialState());
         statesQueue.push(searchable->getInitialState());
 
-        while(!statesQueue.empty()) {
+        while (!statesQueue.empty()) {
             // Dequeue a vertex from queue
-            State<T>* node = statesQueue.front();
+            State<T> *node = statesQueue.front();
             statesQueue.pop();
             ++howManyNodes;
             if (node->equals(searchable->getGoalState())) {
@@ -52,7 +52,7 @@ public:
             // Get all adjacent vertices of the dequeued
             // vertex s. If a adjacent has not been visited,
             // then mark it visited and enqueue it
-            for (State<T>* neighbor : neighbors) {
+            for (State<T> *neighbor : neighbors) {
                 if (!stateIsInVisited(neighbor, visited)) {
                     neighbor->setCameFrom(node);
                     visited.push_back(neighbor);

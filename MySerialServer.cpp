@@ -1,6 +1,6 @@
 #include "MySerialServer.h"
 
-void MySerialServer::open(int port, ClientHandler* handler) {
+void MySerialServer::open(int port, ClientHandler *handler) {
     thread thread1(openSocket, port, handler);
     thread1.detach();
 }
@@ -9,7 +9,7 @@ void MySerialServer::stop() {
 
 }
 
-void MySerialServer::openSocket(int port, ClientHandler* handler) {
+void MySerialServer::openSocket(int port, ClientHandler *handler) {
     int sockfd, newsockfd, portno, clilen;
     struct sockaddr_in serv_addr, cli_addr;
 

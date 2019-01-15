@@ -5,7 +5,7 @@ void MyClientHandler::handleClient(int sockfd) {
     char *result;
     int n;
     vector<string> data;
-    vector<State<Point>*> searchable;
+    vector<State<Point> *> searchable;
     vector<vector<string>> temps;
     string problem = "";
 
@@ -46,8 +46,8 @@ void MyClientHandler::handleClient(int sockfd) {
         Point goal(stoi((temps[temps.size() - 1])[0]), stoi((temps[temps.size() - 1])[1]));
         data.clear();
 
-        Searchable<Point>* searchable1 = new Matrix(searchable, this->getInitialState(searchable, initial),
-                this->getGoalState(searchable, goal));
+        Searchable<Point> *searchable1 = new Matrix(searchable, this->getInitialState(searchable, initial),
+                                                    this->getGoalState(searchable, goal));
 
         //get solution
         if (this->cacheManager->doWeHaveSolution(problem)) {
@@ -68,10 +68,10 @@ void MyClientHandler::handleClient(int sockfd) {
             perror("ERROR writing to socket");
             exit(1);
         }
-        for (State<Point>* state : searchable1->getSearchable()) {
+        for (State<Point> *state : searchable1->getSearchable()) {
             delete (state);
         }
-        delete(searchable1);
+        delete (searchable1);
         break;
     }
 }
@@ -91,7 +91,7 @@ vector<string> MyClientHandler::split(string buffer) {
     return data;
 }
 
-State<Point>* MyClientHandler::getInitialState(vector<State<Point> *> searchable, Point initial) {
+State<Point> *MyClientHandler::getInitialState(vector<State<Point> *> searchable, Point initial) {
     for (int i = 0; i < searchable.size(); ++i) {
         Point point(searchable[i]->getState().getI(), searchable[i]->getState().getJ());
         if (point == initial) {
@@ -100,7 +100,7 @@ State<Point>* MyClientHandler::getInitialState(vector<State<Point> *> searchable
     }
 }
 
-State<Point>* MyClientHandler::getGoalState(vector<State<Point> *> searchable, Point goal) {
+State<Point> *MyClientHandler::getGoalState(vector<State<Point> *> searchable, Point goal) {
     for (int i = 0; i < searchable.size(); ++i) {
         Point point(searchable[i]->getState().getI(), searchable[i]->getState().getJ());
         if (point == goal) {
@@ -109,9 +109,9 @@ State<Point>* MyClientHandler::getGoalState(vector<State<Point> *> searchable, P
     }
 }
 
-void MyClientHandler::initialSearchable(vector<State<Point>*> &searchable, int i, vector<string> data) {
+void MyClientHandler::initialSearchable(vector<State<Point> *> &searchable, int i, vector<string> data) {
     for (int j = 0; j < data.size(); ++j) {
-        State<Point>* state = new State<Point>(Point(i, j), stod(data[j]));
+        State<Point> *state = new State<Point>(Point(i, j), stod(data[j]));
         searchable.push_back(state);
     }
 }

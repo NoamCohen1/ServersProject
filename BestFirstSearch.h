@@ -57,11 +57,14 @@ public:
                         neighbor->setCameFrom(node);
                         neighbor->setCost(neighbor->getCost() + node->getCost());
                         queueOpen.push(neighbor);
-                    } else if ((neighbor->getCameFrom() != nullptr) && (neighbor->getCost() > (neighbor->getCost() - neighbor->getCameFrom()->getCost() + node->getCost()))) {
+                    } else if ((neighbor->getCameFrom() != nullptr) && (neighbor->getCost() > (neighbor->getCost() -
+                                                                                               neighbor->getCameFrom()->getCost() +
+                                                                                               node->getCost()))) {
                         if (stateIsInClosed(neighbor, statesClosed)) {
                             continue;
                         } else {
-                            neighbor->setCost(neighbor->getCost() - neighbor->getCameFrom()->getCost() + node->getCost());
+                            neighbor->setCost(
+                                    neighbor->getCost() - neighbor->getCameFrom()->getCost() + node->getCost());
                             neighbor->setCameFrom(node);
                             queueOpen = updateQueueOpen(queueOpen);
                         }

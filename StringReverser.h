@@ -6,9 +6,9 @@
 
 using namespace std;
 
-class StringReverser : public Solver <string, string> {
+class StringReverser : public Solver<string, string> {
 public:
-    string solve (string origin);
+    string solve(string origin);
 };
 
 #endif //SERVERSPROJECT_STRINGREVERSER_H

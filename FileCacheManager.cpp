@@ -61,7 +61,7 @@ void FileCacheManager::addSolToMap(string problem, string solution) {
 
 void FileCacheManager::writeInfo(string prob, string solut) {
     ofstream writeToFile;
-    writeToFile.open("data.txt", ofstream::out |ofstream::app);
+    writeToFile.open("data.txt", ofstream::out | ofstream::app);
     if (!writeToFile) {
         throw "Failed opening file";
     }

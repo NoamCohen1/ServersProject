@@ -7,14 +7,14 @@
 
 using namespace std;
 
-template <class T>
+template<class T>
 class Searchable {
 protected:
-    vector<State<T>*> searchable;
-    State<T>* initialState;
-    State<T>* goalState;
+    vector<State<T> *> searchable;
+    State<T> *initialState;
+    State<T> *goalState;
 public:
-    Searchable(vector<State<T>*> searchable, State<T>* initialState, State<T>* goalState) {
+    Searchable(vector<State<T> *> searchable, State<T> *initialState, State<T> *goalState) {
         this->searchable = searchable;
         this->initialState = initialState;
         this->goalState = goalState;
@@ -24,11 +24,11 @@ public:
         return this->searchable;
     }
 
-    virtual State<T>* getInitialState() = 0;
+    virtual State<T> *getInitialState() = 0;
 
-    virtual State<T>* getGoalState() = 0;
+    virtual State<T> *getGoalState() = 0;
 
-    virtual vector<State<T>*> getAllPossibleStates(State<T>* state) = 0;
+    virtual vector<State<T> *> getAllPossibleStates(State<T> *state) = 0;
 
     virtual void writeCostAndNodes(string solution) = 0;
 };

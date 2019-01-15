@@ -12,13 +12,13 @@ using namespace server_side;
 
 class MyParallelServer : public Server {
     struct info *paramInfo = new info();
-    vector <pthread_t> threads;
+    vector<pthread_t> threads;
 public:
     void open(int port, ClientHandler *cH);
 
     void stop();
 
-    static void* threadFunc (void* data);
+    static void *threadFunc(void *data);
 };
 
 #endif //SERVERSPROJECT_MYPARALLELSERVER_H

@@ -14,15 +14,15 @@ public:
         this->howManyNodes = 0;
     }
 
-    bool equals(State<T>* s) {
+    bool equals(State<T> *s) {
         return (this->state == s->state);
     }
 
-    void setCameFrom(State<T>* s) {
+    void setCameFrom(State<T> *s) {
         this->cameFrom = s;
     }
 
-    State<T>* getCameFrom() {
+    State<T> *getCameFrom() {
         return this->cameFrom;
     }
 
@@ -46,11 +46,11 @@ public:
         return this->howManyNodes;
     }
 
-    void setFgh(double fgh){
+    void setFgh(double fgh) {
         this->fgh = fgh;
     }
 
-    double getFgh(){
+    double getFgh() {
         return this->fgh;
     }
 };

@@ -17,6 +17,7 @@ class AStar : public Searcher<T> {
             return (first->getFgh() > second->getFgh());
         }
     };
+
 public:
     virtual string search(Searchable<T> *searchable) {
         // OPEN
@@ -61,11 +62,14 @@ public:
                         neighbor->setCost(neighbor->getCost() + node->getCost());
                         neighbor->setFgh(calculateFgh(neighbor, searchable->getGoalState()));
                         queueOpen.push(neighbor);
-                    } else if ((neighbor->getCameFrom() != nullptr) && (neighbor->getCost() > (neighbor->getCost() - neighbor->getCameFrom()->getCost() + node->getCost()))) {
+                    } else if ((neighbor->getCameFrom() != nullptr) && (neighbor->getCost() > (neighbor->getCost() -
+                                                                                               neighbor->getCameFrom()->getCost() +
+                                                                                               node->getCost()))) {
                         if (stateIsInClosed(neighbor, statesClosed)) {
                             continue;
                         } else {
-                            neighbor->setCost(neighbor->getCost() - neighbor->getCameFrom()->getCost() + node->getCost());
+                            neighbor->setCost(
+                                    neighbor->getCost() - neighbor->getCameFrom()->getCost() + node->getCost());
                             neighbor->setFgh(calculateFgh(neighbor, searchable->getGoalState()));
                             neighbor->setCameFrom(node);
                             queueOpen = updateQueueOpen(queueOpen);
@@ -91,7 +95,7 @@ public:
         return result;
     }
 
-    double calculateFgh(State<T>* state,State<T>* goal) {
+    double calculateFgh(State<T> *state, State<T> *goal) {
         // according to manhattan distance
         double f = 0;
         double h = abs(state->getState().getI() - goal->getState().getI()) +

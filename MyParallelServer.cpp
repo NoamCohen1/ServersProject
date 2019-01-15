@@ -11,7 +11,7 @@ void MyParallelServer::open(int port, ClientHandler *cH) {
         perror("ERROR opening socket");
         exit(1);
     }
-    this->paramInfo->clientHandler=cH;
+    this->paramInfo->clientHandler = cH;
     /* Initialize socket structure */
     bzero((char *) &serv_addr, sizeof(serv_addr));
     portno = port;
@@ -33,7 +33,7 @@ void MyParallelServer::open(int port, ClientHandler *cH) {
     timeout.tv_sec = 10;
     timeout.tv_usec = 0;
     //setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, (char *) &timeout, sizeof(timeout));
-    while (true){
+    while (true) {
         // Accept actual connection from the client
         cliSock = accept(sockfd, (struct sockaddr *) &cli_addr, (socklen_t *) &clilen);
         this->paramInfo->sockfd = cliSock;
@@ -50,7 +50,7 @@ void MyParallelServer::open(int port, ClientHandler *cH) {
             perror("ERROR on setting timeout");
         }
         pthread_t pthread;
-        if(pthread_create(&pthread, nullptr,MyParallelServer::threadFunc,paramInfo)!=0){
+        if (pthread_create(&pthread, nullptr, MyParallelServer::threadFunc, paramInfo) != 0) {
             perror("thread failed");
         }
         this->threads.push_back(pthread);
@@ -64,7 +64,7 @@ void *MyParallelServer::threadFunc(void *data) {
 }
 
 void MyParallelServer::stop() {
-    for(int i = 0; i < this->threads.size(); ++i) {
+    for (int i = 0; i < this->threads.size(); ++i) {
         pthread_join(this->threads[i], nullptr);
     }
     return;

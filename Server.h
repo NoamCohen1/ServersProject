@@ -15,13 +15,13 @@
 namespace server_side {
     class Server {
     protected:
-        struct  info{
+        struct info {
             int sockfd;
             ClientHandler *clientHandler;
         };
         bool stopLoop = false;
     public:
-        virtual void open(int port, ClientHandler* handler) = 0;
+        virtual void open(int port, ClientHandler *handler) = 0;
 
         virtual void stop() = 0;
     };

@@ -7,10 +7,10 @@
 
 using namespace std;
 
-template <class T>
+template<class T>
 class Searcher {
 public:
-    virtual string search(Searchable<T>* searchable) = 0;
+    virtual string search(Searchable<T> *searchable) = 0;
 };
 
 #endif //SERVERSPROJECT_SEARCHER_H

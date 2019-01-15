@@ -9,7 +9,7 @@ using namespace std;
 class CacheManager {
 protected:
     mutable pthread_mutex_t mutex;
-    map <string, string> pAndS;
+    map<string, string> pAndS;
 public:
     virtual bool doWeHaveSolution(string problem) = 0;
 

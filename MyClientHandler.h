@@ -7,10 +7,10 @@
 #define DELIMITER ","
 
 class MyClientHandler : public ClientHandler {
-    Solver<Searchable<Point>*, string>* solver;
-    CacheManager* cacheManager;
+    Solver<Searchable<Point> *, string> *solver;
+    CacheManager *cacheManager;
 public:
-    MyClientHandler(Solver<Searchable<Point>*, string>* solver, CacheManager* cacheManager) {
+    MyClientHandler(Solver<Searchable<Point> *, string> *solver, CacheManager *cacheManager) {
         this->solver = solver;
         this->cacheManager = cacheManager;
     }
@@ -19,11 +19,11 @@ public:
 
     vector<string> split(string buffer);
 
-    State<Point>* getInitialState(vector<State<Point>*> searchable, Point initial);
+    State<Point> *getInitialState(vector<State<Point> *> searchable, Point initial);
 
-    State<Point>* getGoalState(vector<State<Point>*> searchable, Point goal);
+    State<Point> *getGoalState(vector<State<Point> *> searchable, Point goal);
 
-    void initialSearchable(vector<State<Point>*> &searchable, int i, vector<string> data);
+    void initialSearchable(vector<State<Point> *> &searchable, int i, vector<string> data);
 };
 
 

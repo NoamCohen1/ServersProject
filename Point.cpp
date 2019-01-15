@@ -1,6 +1,6 @@
 #include "Point.h"
 
-string Point::getPath(vector<State<Point>*> pathVector) {
+string Point::getPath(vector<State<Point> *> pathVector) {
     string path = "";
     for (int i = 0; i < (pathVector.size() - 1); ++i) {
         int i1 = pathVector[i]->getState().getI();
@@ -30,6 +30,6 @@ string Point::getPath(vector<State<Point>*> pathVector) {
             finalPath += "Down,";
         }
     }
-    string st = finalPath.substr(0, finalPath.length()-1);
+    string st = finalPath.substr(0, finalPath.length() - 1);
     return st;
 }

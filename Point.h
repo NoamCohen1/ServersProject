@@ -19,7 +19,7 @@ public:
         this->j = j;
     }
 
-    Point* getPoint() {
+    Point *getPoint() {
         return this;
     }
 
@@ -40,7 +40,7 @@ public:
         this->j = j;
     }
 
-    string getPath(vector<State<Point>*> pathVector);
+    string getPath(vector<State<Point> *> pathVector);
 };
 
 #endif //SERVERSPROJECT_POINT_H
