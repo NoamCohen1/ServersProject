@@ -117,20 +117,6 @@ int main() {
 //    string x = b->search(m);
 //    cout << x << endl;
 
-
-
-//    MyParallelServer* d = new  MyParallelServer();
-//    Solver<Searchable<Point>*, string>* solver = new SolverSearcher(new AStar<Point>());
-//    CacheManager* cacheManager = new FileCacheManager();
-//    ClientHandler* ds = new MyClientHandler(solver, cacheManager);
-//    d->open(5400,ds);
-//    while (true) {}
-
-
-
-
-
-
 ///* Description of the Grid-
 //     1--> The cell is not blocked
 //     0--> The cell is blocked    */
@@ -181,48 +167,56 @@ int main() {
 //    string x = b->search(m);
 //    cout << x << endl;
 
-    vector<State<Point> *> searchable;
-    int size = 37;
-    string buffer;
-    ifstream fileSolutions;
-    fileSolutions.open("tests.txt", ifstream::in | istream::app);
-    if (!fileSolutions) {
-        throw "Failed opening file";
-    }
-    State<Point> *initialState = new State<Point>(Point(0,0),0);
-    State<Point> *goalState = new State<Point>(Point(size-1, size-1),0);
-    int i = 0;
-    while (getline(fileSolutions, buffer)) {
-        vector<string> chopped = split(buffer);
-        for (int j = 0; j < size; ++j) {
-            if (i == 0 && j == 0) {
-                initialState->setCost(stod(chopped[j]));
-                searchable.push_back(initialState);
-                continue;
-                //set goal state cost
-            } else if (i == (size -1) && j == (size -1) ) {
-                goalState->setCost(stod(chopped[j]));
-                searchable.push_back(goalState);
-                continue;
-                //make states
-            }else{
-                searchable.push_back(new State<Point>(Point(i,j),stoi(chopped[j])));
-            }
+//    vector<State<Point> *> searchable;
+//    int size = 37;
+//    string buffer;
+//    ifstream fileSolutions;
+//    fileSolutions.open("tests.txt", ifstream::in | istream::app);
+//    if (!fileSolutions) {
+//        throw "Failed opening file";
+//    }
+//    State<Point> *initialState = new State<Point>(Point(0,0),0);
+//    State<Point> *goalState = new State<Point>(Point(size-1, size-1),0);
+//    int i = 0;
+//    while (getline(fileSolutions, buffer)) {
+//        vector<string> chopped = split(buffer);
+//        for (int j = 0; j < size; ++j) {
+//            if (i == 0 && j == 0) {
+//                initialState->setCost(stod(chopped[j]));
+//                searchable.push_back(initialState);
+//                continue;
+//                //set goal state cost
+//            } else if (i == (size -1) && j == (size -1) ) {
+//                goalState->setCost(stod(chopped[j]));
+//                searchable.push_back(goalState);
+//                continue;
+//                //make states
+//            }else{
+//                searchable.push_back(new State<Point>(Point(i,j),stoi(chopped[j])));
+//            }
+//
+//        }
+//        i++;
+//    }
+//
+//    Searchable<Point> *matrix = new Matrix(searchable, initialState, goalState);
+//    vector<pair<double, pair<int, int>>> pairsVector = makePairs(matrix->getSearchable());
+//    pair<double, pair<int, int>> initialPair = makePairsOfGAndI(initialState);
+//    pair<double, pair<int, int>> goalPair = makePairsOfGAndI(goalState);
+//    matrix->setPairsVector(pairsVector);
+//    matrix->setInitialPair(initialPair);
+//    matrix->setGoalPair(goalPair);
+//    string s;
+//    Searcher<Point> *b = new AStar<Point>;
+//    string x = b->search(matrix);
+//    cout << x << endl;
 
-        }
-        i++;
-    }
+    MyParallelServer* d = new  MyParallelServer();
+    Solver<Searchable<Point>*, string>* solver = new SolverSearcher(new AStar<Point>());
+    CacheManager* cacheManager = new FileCacheManager();
+    ClientHandler* ds = new MyClientHandler(solver, cacheManager);
+    d->open(5400,ds);
+    while (true) {}
 
-    Searchable<Point> *matrix = new Matrix(searchable, initialState, goalState);
-    vector<pair<double, pair<int, int>>> pairsVector = makePairs(matrix->getSearchable());
-    pair<double, pair<int, int>> initialPair = makePairsOfGAndI(initialState);
-    pair<double, pair<int, int>> goalPair = makePairsOfGAndI(goalState);
-    matrix->setPairsVector(pairsVector);
-    matrix->setInitialPair(initialPair);
-    matrix->setGoalPair(goalPair);
-    string s;
-    Searcher<Point> *b = new DFS<Point>;
-    string x = b->search(matrix);
-    cout << x << endl;
     return 0;
 }

@@ -7,7 +7,9 @@
 
 #include <string>
 #include <map>
+
 using namespace std;
+
 class CacheManager {
 protected:
     map <string, string> pAndS;

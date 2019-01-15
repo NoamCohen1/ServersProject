@@ -12,7 +12,7 @@
 #include "Server.h"
 #include "MyClientHandler.h"
 
-class MyParallelServer : public Server {
+class MyParallelServer : public server_side::Server {
     struct info *paramInfo = new info();
     vector<pthread_t> threadList;
     int port;

@@ -50,7 +50,7 @@ public:
         if ((searchable->getInitialState()->getCost() == (-1)) ||
             (searchable->getGoalState()->getCost() == (-1))) {
             result = "-1";
-            solutionToFile = "-1";
+            solutionToFile = "-1,0";
             searchable->writeCostAndNodes(solutionToFile);
             return result;
         }
@@ -313,7 +313,8 @@ public:
         // list is empty, then we conclude that we failed to
         // reach the destiantion cell. This may happen when the
         // there is no way to destination cell (due to blockages)
-        solutionToFile = "-1";
+        solutionToFile += "-1";
+        solutionToFile += "," + to_string(howManyNodes);
         searchable->writeCostAndNodes(solutionToFile);
         return "-1";
     }
@@ -420,17 +421,17 @@ public:
             int i2 = p2.first;
             int j2 = p2.second;
             if ((i1 == i2) && (j1 == (j2 - 1))) {
-                path += "R";
+                path += "Right,";
             } else if ((i1 == i2) && (j1 == (j2 + 1))) {
-                path += "L";
+                path += "Left,";
             } else if ((i1 == (i2 - 1)) && (j1 == j2)) {
-                path += "D";
+                path += "Down,";
             } else if ((i1 == (i2 + 1)) && (j1 == j2)) {
-                path += "U";
+                path += "Up,";
             }
         }
-
-        return path;
+        string st = path.substr(0, path.length()-1);
+        return st;
     }
 };
 

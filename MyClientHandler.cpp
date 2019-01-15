@@ -64,18 +64,18 @@ void MyClientHandler::handleClient(int sockfd) {
         pair<double, pair<int, int>> goalPair = this->makePairsOfGAndI(searchable1->getGoalState());
         searchable1->setGoalPair(goalPair);
 
-        pthread_mutex_t mutex;
+        //pthread_mutex_t mutex;
         //get solution
         if (this->cacheManager->doWeHaveSolution(problem)) {
-            pthread_mutex_lock(&mutex);
+            //pthread_mutex_lock(&mutex);
             string str = this->cacheManager->getSolution(problem);
-            pthread_mutex_unlock(&mutex);
+            //pthread_mutex_unlock(&mutex);
             result = const_cast<char *>(str.c_str());
         } else {
             string solution = this->solver->solve(searchable1);
-            pthread_mutex_lock(&mutex);
+            //pthread_mutex_lock(&mutex);
             this->cacheManager->addSolToMap(problem, solution);
-            pthread_mutex_unlock(&mutex);
+            //pthread_mutex_unlock(&mutex);
             result = const_cast<char *>(solution.c_str());
             this->cacheManager->writeInfo(problem, result);
         }

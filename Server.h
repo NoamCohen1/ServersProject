@@ -16,7 +16,11 @@
 
 #include "ClientHandler.h"
 
-class Server {
+namespace server_side {
+    class Server;
+}
+
+class server_side::Server {
 protected:
     struct  info{
         int sockfd;

@@ -22,5 +22,18 @@ string Point::getPath(vector<State<Point>*> pathVector) {
         }
     }
     reverse(path.begin(), path.end());
-    return path;
+    string finalPath = "";
+    for (int k = 0; k < (path.length() - 1); ++k) {
+        if (path[k] == 'R') {
+            finalPath += "Right,";
+        } else if (path[k] == 'L') {
+            finalPath += "Left,";
+        } else if (path[k] == 'U') {
+            finalPath += "Up,";
+        } else if (path[k] == 'D') {
+            finalPath += "Down,";
+        }
+    }
+    string st = finalPath.substr(0, finalPath.length()-1);
+    return st;
 }
