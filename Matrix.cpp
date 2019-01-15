@@ -1,7 +1,3 @@
-//
-// Created by gal on 1/9/19.
-//
-
 #include "Matrix.h"
 
 vector<State<Point>*> Matrix::getAllPossibleStates(State<Point>* state) {

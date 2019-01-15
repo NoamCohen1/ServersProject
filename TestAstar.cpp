@@ -1,13 +1,9 @@
-////
-//// Created by gal on 1/13/19.
-////
-//
 //// A C++ Program to implement A* Search Algorithm
 //#include<bits/stdc++.h>
 //using namespace std;
 //
-//#define ROW 3
-//#define COL 3
+//#define ROW 10
+//#define COL 10
 //
 //// Creating a shortcut for int, int pair type
 //typedef pair<int, int> Pair;
@@ -160,13 +156,15 @@
 //    cellDetails[i][j].parent_i = i;
 //    cellDetails[i][j].parent_j = j;
 //
-//    /*
+//    */
+///*
 //    Create an open list having information as-
 //    <f, <i, j>>
 //    where f = g + h,
 //    and i, j are the row and column index of that cell
 //    Note that 0 <= i <= ROW-1 & 0 <= j <= COL-1
-//    This open list is implenented as a set of pair of pair.*/
+//    This open list is implenented as a set of pair of pair.*//*
+//
 //    set<pPair> openList;
 //
 //    // Put the starting cell on the open list and set its
@@ -189,7 +187,8 @@
 //        j = p.second.second;
 //        closedList[i][j] = true;
 //
-//        /*
+//        */
+///*
 //            Generating all the 8 successor of this cell
 //
 //                N.W N N.E
@@ -208,7 +207,8 @@
 //            N.E--> North-East (i-1, j+1)
 //            N.W--> North-West (i-1, j-1)
 //            S.E--> South-East (i+1, j+1)
-//            S.W--> South-West (i+1, j-1)*/
+//            S.W--> South-West (i+1, j-1)*//*
+//
 //
 //        // To store the 'g', 'h' and 'f' of the 8 successors
 //        double gNew, hNew, fNew;
@@ -432,23 +432,33 @@
 //// Driver program to test above function
 //int main()
 //{
-//    /* Description of the Grid-
+//    */
+///* Description of the Grid-
 //    1--> The cell is not blocked
-//    0--> The cell is blocked */
+//    0--> The cell is blocked *//*
+//
 //    int grid[ROW][COL] =
 //            {
-//                    { 3, 2, 2 },
-//                    { 1, 7, 5 },
-//                    { 100, 4, 6 }
+//                    { 6,6,9,0,10,3,5,2,4,-1 },
+//                    { -1,-1,3,8,1,3,0,7,4,2 },
+//                    { 9,2,2,10,4,8,6,2,1,0 },
+//                    { -1,6,7,5,2,5,2,8,2,2 },
+//                    { 1,-1,3,5,2,3,5,9,0,7 },
+//                    { 10,7,7,-1,7,1,5,0,2,-1 },
+//                    { 6,0,-1,0,6,10,7,3,7,0 },
+//                    { 0,9,6,10,10,0,6,3,1,7 },
+//                    { 1,5,-1,7,8,10,1,-1,5,4 },
+//                    { 8,7,3,0,0,5,10,1,7,8 }
 //            };
 //
 //    // Source is the left-most bottom-most corner
 //    Pair src = make_pair(0, 0);
 //
 //    // Destination is the left-most top-most corner
-//    Pair dest = make_pair(2, 2);
+//    Pair dest = make_pair(9, 9);
 //
 //    aStarSearch(grid, src, dest);
 //
 //    return(0);
 //}
+//*/

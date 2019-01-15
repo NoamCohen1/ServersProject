@@ -1,7 +1,3 @@
-//
-// Created by gal on 1/7/19.
-//
-
 #ifndef SERVERSPROJECT_SEARCHABLE_H
 #define SERVERSPROJECT_SEARCHABLE_H
 
@@ -17,9 +13,6 @@ protected:
     vector<State<T>*> searchable;
     State<T>* initialState;
     State<T>* goalState;
-    vector<pair<double, pair<int, int>>> pairsVector;
-    pair<double, pair<int, int>> initialPair;
-    pair<double, pair<int, int>> goalPair;
 public:
     Searchable(vector<State<T>*> searchable, State<T>* initialState, State<T>* goalState) {
         this->searchable = searchable;
@@ -37,30 +30,7 @@ public:
 
     virtual vector<State<T>*> getAllPossibleStates(State<T>* state) = 0;
 
-    vector<pair<double, pair<int, int>>> getPairsVector() {
-        return this->pairsVector;
-    }
-
-    pair<double, pair<int, int>> getInitialPair() {
-        return this->initialPair;
-    }
-
-    pair<double, pair<int, int>> getGoalPair() {
-        return this->goalPair;
-    }
-
-    void setPairsVector(vector<pair<double, pair<int, int>>> pairsVector) {
-        this->pairsVector = pairsVector;
-    }
-
-    void setInitialPair(pair<double, pair<int, int>> initialPair) {
-        this->initialPair = initialPair;
-    }
-
-    void setGoalPair(pair<double, pair<int, int>> goalPair) {
-        this->goalPair = goalPair;
-    }
-
     virtual void writeCostAndNodes(string solution) = 0;
 };
+
 #endif //SERVERSPROJECT_SEARCHABLE_H

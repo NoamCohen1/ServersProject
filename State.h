@@ -1,7 +1,3 @@
-//
-// Created by gal on 1/8/19.
-//
-
 #ifndef SERVERSPROJECT_STATE_H
 #define SERVERSPROJECT_STATE_H
 
@@ -11,18 +7,12 @@ class State {
     double cost;
     State<T> *cameFrom;
     int howManyNodes;
+    double fgh;
 public:
     State(T state, double cost) : state(state), cost(cost) {
         this->cameFrom = nullptr;
         this->howManyNodes = 0;
     }
-
-    /* State(T state, double cost) {
-         this->state = state;
-         this->cost = cost;
-         this->cameFrom = nullptr;
-         this->howManyNodes = 0;
-     }*/
 
     bool equals(State<T>* s) {
         return (this->state == s->state);
@@ -55,7 +45,14 @@ public:
     int getHowManyNodes() {
         return this->howManyNodes;
     }
-};
 
+    void setFgh(double fgh){
+        this->fgh = fgh;
+    }
+
+    double getFgh(){
+        return this->fgh;
+    }
+};
 
 #endif //SERVERSPROJECT_STATE_H

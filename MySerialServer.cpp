@@ -39,8 +39,6 @@ void MySerialServer::openSocket(int port, ClientHandler* handler) {
     * go in sleep mode and will wait for the incoming connection
     */
 
-
-
     while (true) {
         listen(sockfd, 5);
         clilen = sizeof(cli_addr);
@@ -49,4 +47,3 @@ void MySerialServer::openSocket(int port, ClientHandler* handler) {
         handler->handleClient(newsockfd);
     }
 }
-

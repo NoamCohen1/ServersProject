@@ -11,7 +11,6 @@ void MyParallelServer::open(int port, ClientHandler *cH) {
         perror("ERROR opening socket");
         exit(1);
     }
-    /*this->passingData->sockfd = sockfd;*/
     this->paramInfo->clientHandler=cH;
     /* Initialize socket structure */
     bzero((char *) &serv_addr, sizeof(serv_addr));
@@ -31,16 +30,15 @@ void MyParallelServer::open(int port, ClientHandler *cH) {
     clilen = sizeof(cli_addr);
 
     timeval timeout;
-    timeout.tv_sec = 1000;
+    timeout.tv_sec = 10;
     timeout.tv_usec = 0;
-    setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, (char *) &timeout, sizeof(timeout));
+    //setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, (char *) &timeout, sizeof(timeout));
     while (true){
         // Accept actual connection from the client
         cliSock = accept(sockfd, (struct sockaddr *) &cli_addr, (socklen_t *) &clilen);
         this->paramInfo->sockfd = cliSock;
         if (cliSock < 0) {
-            if (errno == EWOULDBLOCK) {
-                cout << "TimeOut!" << endl;
+            if (errno == EAGAIN || errno == EWOULDBLOCK) {
                 stop();
                 break;
             } else {
@@ -48,12 +46,16 @@ void MyParallelServer::open(int port, ClientHandler *cH) {
                 exit(1);
             }
         }
+        if (setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, (char *) &timeout, sizeof(timeout)) == -1) {
+            perror("ERROR on setting timeout");
+        }
         pthread_t pthread;
         if(pthread_create(&pthread, nullptr,MyParallelServer::threadFunc,paramInfo)!=0){
             perror("thread failed");
         }
         this->threads.push_back(pthread);
     }
+    return;
 }
 
 void *MyParallelServer::threadFunc(void *data) {
@@ -63,10 +65,7 @@ void *MyParallelServer::threadFunc(void *data) {
 
 void MyParallelServer::stop() {
     for(int i = 0; i < this->threads.size(); ++i) {
-        pthread_join(this->threads[i], NULL);
+        pthread_join(this->threads[i], nullptr);
     }
-    for(int i = 0; i < this->threads.size(); ++i) {
-        close(this->threads[i]);
-    }
-
+    return;
 }

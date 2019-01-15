@@ -1,7 +1,3 @@
-//
-// Created by noam on 1/10/19.
-//
-
 #ifndef SERVERSPROJECT_BFS_H
 #define SERVERSPROJECT_BFS_H
 
@@ -24,8 +20,8 @@ public:
 
         if (searchable->getInitialState()->getCost() == (-1)) {
             solution = "-1";
-            solutionToFile = "-1";
-            searchable->writeCostAndNodes(solutionToFile);
+            solutionToFile = "-1,0";
+            //searchable->writeCostAndNodes(solutionToFile);
             return solution;
         }
 
@@ -49,7 +45,7 @@ public:
                 }
                 solution = node->getState().getPath(path);
                 solutionToFile += to_string((int) finalCost) + "," + to_string(howManyNodes);
-                searchable->writeCostAndNodes(solutionToFile);
+                //searchable->writeCostAndNodes(solutionToFile);
                 return solution;
             }
             neighbors = searchable->getAllPossibleStates(node);
@@ -65,8 +61,8 @@ public:
             }
         }
         solution = "-1";
-        solutionToFile = "-1";
-        searchable->writeCostAndNodes(solutionToFile);
+        solutionToFile += "-1," + to_string(howManyNodes);
+        //searchable->writeCostAndNodes(solutionToFile);
         return solution;
     }
 
@@ -79,6 +75,5 @@ public:
         return false;
     }
 };
-
 
 #endif //SERVERSPROJECT_BFS_H

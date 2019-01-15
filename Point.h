@@ -1,7 +1,3 @@
-//
-// Created by noam on 1/8/19.
-//
-
 #ifndef SERVERSPROJECT_POINT_H
 #define SERVERSPROJECT_POINT_H
 

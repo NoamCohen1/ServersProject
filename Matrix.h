@@ -1,7 +1,3 @@
-//
-// Created by gal on 1/9/19.
-//
-
 #ifndef SERVERSPROJECT_MATRIX_H
 #define SERVERSPROJECT_MATRIX_H
 

@@ -1,21 +1,22 @@
-//
-// Created by noam on 1/3/19.
-//
-
 #include "FileCacheManager.h"
 
 string FileCacheManager::getSolution(string problem) {
-    return pAndS.find(problem)->second;
+    pthread_mutex_lock(&mutex);
+    string result = pAndS.find(problem)->second;
+    pthread_mutex_unlock(&mutex);
+    return result;
 }
 
 bool FileCacheManager::doWeHaveSolution(string problem) {
+    pthread_mutex_lock(&mutex);
     for (auto p : pAndS) {
         if (p.first == problem) {
+            pthread_mutex_unlock(&mutex);
             return true;
-        } else {
-            return false;
         }
     }
+    pthread_mutex_unlock(&mutex);
+    return false;
 }
 
 void FileCacheManager::makeMap() {
@@ -29,9 +30,10 @@ void FileCacheManager::makeMap() {
     }
     while (getline(file, buffer)) {
         allData = split(buffer);
+        pthread_mutex_lock(&mutex);
         pAndS.insert(pair<string, string>(allData[0], allData[1]));
+        pthread_mutex_unlock(&mutex);
     }
-
     file.close();
 }
 
@@ -52,7 +54,9 @@ vector<string> FileCacheManager::split(string buffer) {
 }
 
 void FileCacheManager::addSolToMap(string problem, string solution) {
+    pthread_mutex_lock(&mutex);
     pAndS.insert(pair<string, string>(problem, solution));
+    pthread_mutex_unlock(&mutex);
 }
 
 void FileCacheManager::writeInfo(string prob, string solut) {

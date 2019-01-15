@@ -1,7 +1,3 @@
-//
-// Created by noam on 1/8/19.
-//
-
 #include "Point.h"
 
 string Point::getPath(vector<State<Point>*> pathVector) {
@@ -23,7 +19,7 @@ string Point::getPath(vector<State<Point>*> pathVector) {
     }
     reverse(path.begin(), path.end());
     string finalPath = "";
-    for (int k = 0; k < (path.length() - 1); ++k) {
+    for (int k = 0; k < path.length(); ++k) {
         if (path[k] == 'R') {
             finalPath += "Right,";
         } else if (path[k] == 'L') {

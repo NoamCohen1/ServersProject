@@ -1,11 +1,8 @@
-//
-// Created by gal on 1/9/19.
-//
-
 #ifndef SERVERSPROJECT_MYCLIENTHANDLER_H
 #define SERVERSPROJECT_MYCLIENTHANDLER_H
 
 #include "ClientHandler.h"
+
 #define START_STRING 0
 #define DELIMITER ","
 
@@ -27,10 +24,6 @@ public:
     State<Point>* getGoalState(vector<State<Point>*> searchable, Point goal);
 
     void initialSearchable(vector<State<Point>*> &searchable, int i, vector<string> data);
-
-    vector<pair<double, pair<int, int>>> makePairs(vector<State<Point>*> searchable);
-
-    pair<double, pair<int, int>> makePairsOfGAndI(State<Point>* state);
 };
 
 

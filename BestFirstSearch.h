@@ -1,7 +1,3 @@
-//
-// Created by gal on 1/7/19.
-//
-
 #ifndef SERVERSPROJECT_BESTFIRSTSEARCH_H
 #define SERVERSPROJECT_BESTFIRSTSEARCH_H
 
@@ -34,6 +30,8 @@ public:
             // if the initial point is unreachable - does not have any neighbors
             if ((node->equals(searchable->getInitialState())) && (node->getCost() == (-1))) {
                 solution = "-1";
+                solutionToFile += "-1,0";
+                //searchable->writeCostAndNodes(solutionToFile);
                 return solution;
             }
             statesClosed.push_back(node);
@@ -44,7 +42,7 @@ public:
                 vector<State<T> *> path;
                 path.push_back(node);
                 solutionToFile += to_string((int) node->getCost()) + "," + to_string(statesClosed.size());
-                searchable->writeCostAndNodes(solutionToFile);
+                //searchable->writeCostAndNodes(solutionToFile);
                 while (!(node->equals(searchable->getInitialState()))) {
                     node = node->getCameFrom();
                     path.push_back(node);
@@ -60,15 +58,8 @@ public:
                         neighbor->setCost(neighbor->getCost() + node->getCost());
                         queueOpen.push(neighbor);
                     } else if ((neighbor->getCameFrom() != nullptr) && (neighbor->getCost() > (neighbor->getCost() - neighbor->getCameFrom()->getCost() + node->getCost()))) {
-//                        if (!(stateIsInOpen(neighbor, queueOpen))) {
-//                            for (State<T> *s : statesClosed) {
-//                                if (neighbor->equals(s)) {
-//                                    statesClosed.erase(s*/*remove(statesClosed.begin(), statesClosed.end(), s), statesClosed.end()*/);
-//                                    queueOpen.push(neighbor);
-//                                }
-//                            }
                         if (stateIsInClosed(neighbor, statesClosed)) {
-                            //cout << "oof" << endl;
+                            continue;
                         } else {
                             neighbor->setCost(neighbor->getCost() - neighbor->getCameFrom()->getCost() + node->getCost());
                             neighbor->setCameFrom(node);
@@ -79,8 +70,8 @@ public:
             }
         }
         solution = "-1";
-        solutionToFile = "-1";
-        searchable->writeCostAndNodes(solutionToFile);
+        solutionToFile += "-1," + to_string(statesClosed.size());
+        //searchable->writeCostAndNodes(solutionToFile);
         return solution;
     }
 
@@ -114,6 +105,5 @@ public:
         return false;
     }
 };
-
 
 #endif //SERVERSPROJECT_BESTFIRSTSEARCH_H
