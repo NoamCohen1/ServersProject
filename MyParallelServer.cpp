@@ -48,10 +48,6 @@ void MyParallelServer::start() {
     int addrlen = sizeof(address);
 
     timeval timeout;
-//    timeout.tv_sec = 10;
-//    timeout.tv_usec = 0;
-//    setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, (char *) &timeout, sizeof(timeout));
-
     int newSocket;
     while (true) {
         newSocket = accept(sockfd, (struct sockaddr *) &address, (socklen_t *) &addrlen);
