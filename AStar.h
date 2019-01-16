@@ -53,6 +53,7 @@ public:
                 }
                 // call func to return the path by the places
                 solution = node->getState().getPath(path);
+                cout << "gallIsTheBesttt1111" << endl;
                 return solution;
             } else {
                 neighbors = searchable->getAllPossibleStates(node);
