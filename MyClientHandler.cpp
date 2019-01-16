@@ -29,7 +29,7 @@ void MyClientHandler::handleClient(int sockfd) {
                     char c = buffer[i];
                     if (c == '\n') {
                         if (buff.length() > 0) {
-                            printf("Next command is [%s]\n", buff.c_str());
+                            //printf("Next command is [%s]\n", buff.c_str());
                             if (buff == "end") {
                                 break;
                             }
@@ -53,42 +53,7 @@ void MyClientHandler::handleClient(int sockfd) {
                 buff = "";
                 break;
             }
-
-
-
-            // read the matrix
-//            bzero(buffer, 256);
-//            n = read(sockfd, buffer, 255);
-//            if (n < 0) {
-//                perror("ERROR reading from socket");
-//                exit(1);            //vector<string> info;
-//
-//            }
-//
-//            size_t pos = 0;
-//            string delimiter2 = "\n";
-//            buff += buffer;
-//            pos = buff.find(delimiter2);
-//            leftOvers += buff.substr((0, pos));
-//            // to remove the \n from the beginning of the string
-//            leftOvers = leftOvers.substr(1);
-//            buff.erase(pos + delimiter2.length() - 1);
-//
-//            if (buff == "end") {
-//                break;
-//            }
-//            problem += "(";
-//            problem += buff;
-//            problem += ")";
-//            data = split(buff);
-//            temps.push_back(data);
-//            data.clear();
-//
-//            buff = "";
-//            buff += leftOvers;
-//            leftOvers = "";
         }
-        cout <<"yay1"<<endl;
         for (int j = 0; j < (temps.size() - 2); ++j) {
             this->initialSearchable(searchable, j, temps[j]);
         }
@@ -96,43 +61,22 @@ void MyClientHandler::handleClient(int sockfd) {
         data.clear();
         Point goal(stoi((temps[temps.size() - 1])[0]), stoi((temps[temps.size() - 1])[1]));
         data.clear();
-        cout <<"yay2"<<endl;
         Searchable<Point> *searchable1 = new Matrix(searchable, this->getInitialState(searchable, initial),
                                                     this->getGoalState(searchable, goal));
-        cout <<"yay3"<<endl;
-
         //get solution
         if (this->cacheManager->doWeHaveSolution(problem)) {
-            cout <<"yay4"<<endl;
-
             string str = this->cacheManager->getSolution(problem);
-            cout <<"yay5"<<endl;
-
             result = const_cast<char *>(str.c_str());
-            cout <<"yay6"<<endl;
-
             //printf("Here is the message after: %s\n", result);
             n = write(sockfd, result, strlen(result));
         } else {
-            cout <<"yay7"<<endl;
-
             string solution = this->solver->solve(searchable1);
-            cout <<"yay8"<<endl;
-
             this->cacheManager->addSolToMap(problem, solution);
-            cout <<"yay9"<<endl;
-
             result = const_cast<char *>(solution.c_str());
-            cout <<"yay10"<<endl;
-
             this->cacheManager->writeInfo(problem, result);
-            cout <<"yay11"<<endl;
-
             //printf("Here is the message after: %s\n", result);
             n = write(sockfd, result, strlen(result));
         }
-        cout <<"yay12"<<endl;
-
         if (n < 0) {
             perror("ERROR writing to socket");
             exit(1);

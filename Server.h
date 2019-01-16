@@ -15,10 +15,6 @@
 namespace server_side {
     class Server {
     protected:
-        struct info {
-            int sockfd;
-            ClientHandler *clientHandler;
-        };
         bool stopLoop = false;
     public:
         virtual void open(int port, ClientHandler *handler) = 0;

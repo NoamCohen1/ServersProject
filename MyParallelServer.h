@@ -5,24 +5,27 @@
 #include <strings.h>
 #include <unistd.h>
 #include <thread>
+#include <stack>
 #include "Server.h"
 #include "MyClientHandler.h"
 
 using namespace server_side;
 
 class MyParallelServer : public Server {
-    struct info *paramInfo = new info();
-    vector<pthread_t> threads;
+    stack<pthread_t> threads;
+    int sockfd{};
+    int port{};
+    ClientHandler* clientHandler{};
 public:
     void open(int port, ClientHandler *cH);
 
     void stop();
 
-    static void *threadFunc(void *data);
+    static void *startThreadClient(void *data);
 
-    virtual ~MyParallelServer() {
-        delete (paramInfo);
-    }
+    void start();
+
+    virtual ~MyParallelServer() = default;
 };
 
 #endif //SERVERSPROJECT_MYPARALLELSERVER_H
