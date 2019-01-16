@@ -48,28 +48,27 @@ void MyParallelServer::start() {
     int addrlen = sizeof(address);
 
     timeval timeout;
-    timeout.tv_sec = 10;
-    timeout.tv_usec = 0;
-    setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, (char *) &timeout, sizeof(timeout));
+//    timeout.tv_sec = 10;
+//    timeout.tv_usec = 0;
+//    setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, (char *) &timeout, sizeof(timeout));
 
-    int new_socket;
+    int newSocket;
     while (true) {
+        newSocket = accept(sockfd, (struct sockaddr *) &address, (socklen_t *) &addrlen);
         timeout.tv_sec = 10;
         timeout.tv_usec = 0;
         setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, (char *) &timeout, sizeof(timeout));
-        if ((new_socket = accept(sockfd,
-                                 (struct sockaddr *) &address,
-                                 (socklen_t *) &addrlen)) < 0) {
+        if (newSocket < 0) {
             if (errno == EWOULDBLOCK || errno == EAGAIN) {
                 break;
             }
             perror("accept");
             exit(EXIT_FAILURE);
         }
-        setsockopt(new_socket, SOL_SOCKET, SO_RCVTIMEO, (char *) &timeout, sizeof(timeout));
+        setsockopt(newSocket, SOL_SOCKET, SO_RCVTIMEO, (char *) &timeout, sizeof(timeout));
         auto data = new info;
         data->clientHandler = this->clientHandler;
-        data->sock = new_socket;
+        data->sock = newSocket;
         pthread_t trid;
         if (pthread_create(&trid, nullptr, startThreadClient, data) < 0) {
             perror("error on creating thread");
